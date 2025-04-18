@@ -1,0 +1,14 @@
+[
+  {
+    "title": "Understanding Qubits",
+    "summary": "A quick look into the basics of quantum bits and what makes them different...",
+    "thumbnail": "blog-posts/post1/thumbnail.jpg",
+    "link": "blog-posts/post1/post.html"
+  },
+  {
+    "title": "Analog Circuits & Quantum Interfaces",
+    "summary": "Exploring the analog components that make quantum interfacing possible...",
+    "thumbnail": "blog-posts/post2/thumbnail.jpg",
+    "link": "blog-posts/post2/post.html"
+  }
+]
