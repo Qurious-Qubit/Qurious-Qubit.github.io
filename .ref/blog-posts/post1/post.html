@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post - Qurious-Qubit</title>
+  <link rel="stylesheet" href="../../style.css">
+
+  <!-- KaTeX for Math rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.15.0/dist/katex.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.0/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <a href="../../index.html">About</a>
+    <a href="../../blog.html#blog">Blog</a>
+    <a href="../../team.html">Team</a>
+    <a href="../../contact.html">Contact</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <section>
+      <table class="post-layout">
+        <tr>
+          <td class="post-title" colspan="2">
+            <h1>Understanding Qubits</h1>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="post-content-text">
+            <p>
+              Quantum computing relies on the superposition of states. A qubit can be represented as: 
+              <span class="math">|ψ⟩ = α|0⟩ + β|1⟩</span> where α and β are complex numbers, and |0⟩ and |1⟩ are the basis states.
+            </p>
+          </td>
+
+          <td class="post-content-image">
+            <img src="image1.jpg" alt="Qubits">
+            <img src="image2.jpg" alt="Qubits">
+            <img src="image3.jpg" alt="Qubits">
+          </td>
+        </tr>
+
+        <!-- Resources Section -->
+        <tr>
+          <td class="post-content-resources" colspan="2">
+            <h3>Resources:</h3>
+            <ul>
+              <li><a href="https://example.com/qubit-research" target="_blank">Qubit Research Paper</a></li>
+              <li><a href="https://example.com/quantum-course" target="_blank">Quantum Computing Course</a></li>
+            </ul>
+          </td>
+        </tr>
+
+        <!-- References Section -->
+        <tr>
+          <td class="post-content-references" colspan="2">
+            <h3>References:</h3>
+            <ul class="small-text">
+              <li><a href="https://example.com/quantum-book" target="_blank">Quantum Computing for Beginners</a></li>
+              <li><a href="https://example.com/qubit-tutorial" target="_blank">Advanced Qubit Tutorial</a></li>
+            </ul>
+          </td>
+        </tr>
+      </table>
+    </section>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>
+      © 2025 Qurious-Qubit. All rights reserved |
+      <a href="../../contact.html">Contact</a><br>
+      <small>If any copyrighted content has been used unintentionally, please contact us for prompt removal.</small>
+    </p>
+  </div>
+
+  <!-- Render KaTeX Math -->
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      var mathElements = document.querySelectorAll('.math');
+      mathElements.forEach(function(element) {
+        katex.render(element.textContent, element, {
+          throwOnError: false
+        });
+      });
+    });
+  </script>
+</body>
+</html>
