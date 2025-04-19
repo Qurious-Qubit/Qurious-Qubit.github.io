@@ -1,7 +1,7 @@
 import os
 import json
 
-ROOT_DIR = '../blog-posts'
+ROOT_DIR = 'blog-posts'
 
 # Loop through all folders in blog-posts/
 for folder in os.listdir(ROOT_DIR):

@@ -3,7 +3,7 @@ import json
 import re
 from bs4 import BeautifulSoup
 
-ROOT_DIR = '../blog-posts'
+ROOT_DIR = 'blog-posts'
 OUTPUT_FILE = os.path.join(ROOT_DIR, 'meta.json')
 
 def extract_post_data(folder):
