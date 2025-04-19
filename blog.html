@@ -38,7 +38,7 @@
 
   <script>
     // JS to dynamically load previews
-    fetch('blog-posts/meta.json')
+    fetch('blog-posts/meta.json')  // Path to meta.json in blog-posts folder
       .then(response => response.json())
       .then(posts => {
         const container = document.getElementById('blog-posts-container');
@@ -46,14 +46,21 @@
         posts.forEach(post => {
           const postDiv = document.createElement('div');
           postDiv.className = 'post-preview';
+          
+          // Image path based on the meta.json content
+          const thumbnailPath = `blog-posts/${post.folder}/${post.thumbnail}`;
+          const postHtmlPath = `blog-posts/${post.folder}/post.html`; // Assuming each post has an index.html
+
+          // Setting up the inner HTML for the preview
           postDiv.innerHTML = `
-            <img src="blog-posts/${post.folder}/thumbnail.jpg" alt="${post.title} Thumbnail">
+            <img src="${thumbnailPath}" alt="${post.title} Thumbnail">
             <div class="post-content">
               <h3>${post.title}</h3>
               <p>${post.summary}</p>
-              <a href="blog-posts/post-template.html?folder=${post.folder}">Read More</a>
+              <a href="${postHtmlPath}">Read More</a>
             </div>
           `;
+
           container.appendChild(postDiv);
         });
       })

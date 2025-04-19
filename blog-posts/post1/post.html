@@ -81,32 +81,23 @@
 
   <!-- Render KaTeX Math -->
   <script>
-    // JS to dynamically load previews
-    fetch('blog-posts/meta.json')
+    // Fetch the images.json file in the same directory as the HTML
+    fetch('images.json')
       .then(response => response.json())
-      .then(posts => {
-        const container = document.getElementById('blog-posts-container');
+      .then(images => {
+        const imageContainer = document.getElementById('image-container');
+        imageContainer.innerHTML = ""; // Clear any existing content in the image container
   
-        posts.forEach(post => {
-          const postDiv = document.createElement('div');
-          postDiv.className = 'post-preview';
-  
-          const thumbnailPath = `blog-posts/${post.folder}/thumbnail.jpg`;
-          const postHtmlPath = `blog-posts/${post.folder}/post.html`;
-  
-          postDiv.innerHTML = `
-            <img src="${thumbnailPath}" alt="${post.title} Thumbnail">
-            <div class="post-content">
-              <h3>${post.title}</h3>
-              <p>${post.summary}</p>
-              <a href="${postHtmlPath}">Read More</a>
-            </div>
-          `;
-  
-          container.appendChild(postDiv);
+        // Loop through the images and create image elements
+        images.forEach(image => {
+          const img = document.createElement('img');
+          img.src = image;  // Use the image filename from images.json
+          img.alt = `Post Image - ${image}`;  // Set alt text for each image
+          img.className = 'post-image';  // Optional, to style images
+          imageContainer.appendChild(img);  // Append image to the container
         });
       })
-      .catch(error => console.error('Error loading blog previews:', error));
-  </script>
+      .catch(error => console.error('Error loading images:', error));
+  </script>  
 </body>
 </html>
