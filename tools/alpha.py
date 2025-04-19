@@ -12,3 +12,4 @@ for folder in os.listdir(ROOT_DIR):
         with open(json_path, 'w') as f:
             json.dump(images, f, indent=2)
         print(f'Written {len(images)} images to {json_path}')
+ 
