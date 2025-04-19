@@ -2,7 +2,7 @@ import os
 import json
 import re
 from bs4 import BeautifulSoup
- 
+
 ROOT_DIR = 'blog-posts'
 OUTPUT_FILE = os.path.join(ROOT_DIR, 'meta.json')
 
@@ -45,9 +45,21 @@ def extract_post_data(folder):
         'thumbnail': f'{folder}/{thumb_file}' if thumb_file else ''
     }
 
-# Collect all posts
+# Collect and sort posts
 all_posts = []
-for folder in os.listdir(ROOT_DIR):
+folders = [f for f in os.listdir(ROOT_DIR) if os.path.isdir(os.path.join(ROOT_DIR, f))]
+
+# Sort folders numerically for post1, post2, etc., others alphabetically
+def sort_key(folder):
+    if folder.startswith('post'):
+        match = re.match(r'post(\d+)', folder)
+        if match:
+            return (0, int(match.group(1)))  # Sort post1, post2 numerically
+    return (1, folder)  # Sort other folders alphabetically
+
+folders.sort(key=sort_key)
+
+for folder in folders:
     post_data = extract_post_data(folder)
     if post_data:
         all_posts.append(post_data)
