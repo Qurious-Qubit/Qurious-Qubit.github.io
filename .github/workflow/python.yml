@@ -1,35 +1,45 @@
-name: Run Python Scripts on Push
-
-on:
-  push:
-    branches:
-      - main  # Trigger when pushing to the 'main' branch
+name: Update Blog Data
+on: [push]
 
 jobs:
-  run-scripts:
+  process-blog:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+      - name: Checkout repo + submodules
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Required if blog-posts is a submodule
 
       - name: Set up Python
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
-          python-version: '3.8'  # Ensure this version is compatible with your scripts
+          python-version: "3.10"
 
       - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install beautifulsoup4 requests  # Install necessary dependencies
+        run: pip install beautifulsoup4 requests
 
-      - name: Run alpha.py and beta.py
+      - name: Verify paths
+        run: |
+          echo "Repository contents:"
+          ls -R
+          echo -e "\nTools directory contents:"
+          ls -lah tools/
+
+      - name: Run scripts from root
         run: |
           python tools/alpha.py
           python tools/beta.py
 
-      - name: Check if scripts ran successfully
+      - name: Check output
         run: |
-          echo "Checking if the scripts ran without issues..."
-          # You can also include any checks you need to ensure scripts ran successfully
-          # For example, checking for output files or logs.
+          echo "Generated files in blog-posts/:"
+          find blog-posts -name "*.json" -exec ls -lah {} \;
+          [ -f "blog-posts/meta.json" ] || exit 1  # Fail if no output
+
+      - name: Commit changes
+        if: success()
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add blog-posts/
+          git diff --cached --quiet || (git commit -m "Auto-update blog data" && git push)
