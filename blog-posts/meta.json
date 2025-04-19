@@ -8,6 +8,12 @@
   {
     "title": "Understanding Qubits",
     "summary": "Quantum computing relies on the superposition of states. A qubit can be represented as:|\u03c8\u27e9 = \u03b1|0\u27e9 + \u03b2|1\u27e9where \u03b1 and \u03b2 are complex numbers, and |0\u27e9 and |1\u27e9 are the...",
+    "folder": "post3",
+    "thumbnail": "post3/image1.jpg"
+  },
+  {
+    "title": "Understanding Qubits",
+    "summary": "Quantum computing relies on the superposition of states. A qubit can be represented as:|\u03c8\u27e9 = \u03b1|0\u27e9 + \u03b2|1\u27e9where \u03b1 and \u03b2 are complex numbers, and |0\u27e9 and |1\u27e9 are the...",
     "folder": "post2",
     "thumbnail": "post2/image1.jpg"
   }
