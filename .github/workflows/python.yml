@@ -4,20 +4,18 @@ on:
     branches: [main]
   workflow_dispatch:
 
-permissions:  # ← Add this section!
-  contents: write  # Required for pushing changes
+permissions:
+  contents: write
 
 jobs:
   run-scripts:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
+      - uses: actions/setup-python@v4
         with:
           python-version: '3.10'
 
@@ -29,17 +27,11 @@ jobs:
           python tools/alpha.py
           python tools/beta.py
 
-      - name: Commit and push changes
-        if: success()
+      - name: Force commit all generated files
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git add blog-posts/
-          
-          if [ -n "$(git status --porcelain)" ]; then
-            git commit -m "Auto-update: Script-generated files [skip ci]"
-            git pull --rebase
-            git push origin main
-          else
-            echo "No changes to commit"
-          fi
+          git commit -m "Auto-update: Regenerate all files [skip ci]" --allow-empty
+          git pull --rebase
+          git push
