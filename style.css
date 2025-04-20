@@ -71,7 +71,14 @@ body {
   border-radius: 10px;
 }
 
-/* Blog Post Table Layout */
+/* Blog Post*/
+.blog {
+  margin: auto;
+  width: 100%;
+  align-items: centre;
+  text-align: centre;
+}
+
 .post-layout {
   margin: auto;
   width: 100%;
