@@ -73,7 +73,7 @@ body {
 
 /* Blog Post*/
 .blog {
-  padding: 60px 40px;
+  padding: 15px 40px;
   background-color: white;
   color: #333;
   display: flex;
@@ -100,7 +100,6 @@ body {
   margin: auto;
   width: 100%;
 }
-
 .post-preview {
   display: flex;
   flex-direction: row;
@@ -108,9 +107,9 @@ body {
   color: #333;
   max-width: 800px;
   width: 90%;
-  height: 200px;
+  min-height: 200px;
   border-radius: 12px;
-  overflow: hidden;
+  overflow: hidden; /* Only affects shadow/border-radius */
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   transition: transform 0.2s ease;
@@ -123,7 +122,17 @@ body {
 .post-preview img {
   width: 250px;
   height: 100%;
-  object-fit: cover;
+  object-fit: cover; /* Changed from 'contain' to avoid empty space */
+  flex-shrink: 0; /* Prevents image from shrinking */
+  align-self: center;
+}
+
+/* NEW: Text container rules */
+.post-preview > div:not(:first-child) {
+  flex: 1;
+  padding: 20px;
+  overflow: auto; /* Allows scrolling if text overflows */
+  min-width: 0; /* Fixes flex text overflow bug */
 }
 
 .post-content {
