@@ -73,10 +73,27 @@ body {
 
 /* Blog Post*/
 .blog {
-  margin: auto;
-  width: 100%;
-  align-items: centre;
-  text-align: centre;
+  padding: 60px 40px;
+  background-color: white;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+}
+
+.blog h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.blog p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin: 0 auto;
+  max-width: 800px;
+  padding: 0 20px;
 }
 
 .post-layout {
