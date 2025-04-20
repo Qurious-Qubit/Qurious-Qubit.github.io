@@ -76,6 +76,60 @@ body {
   margin: auto;
   width: 100%;
 }
+
+.post-preview {
+  display: flex;
+  flex-direction: row;
+  background-color: #f9f9f9;
+  color: #333;
+  max-width: 800px;
+  width: 90%;
+  height: 200px;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.post-preview:hover {
+  transform: scale(1.02);
+}
+
+.post-preview img {
+  width: 250px;
+  height: 100%;
+  object-fit: cover;
+}
+
+.post-content {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+}
+
+.post-content h3 {
+  margin-top: 0;
+  font-size: 1.4rem;
+}
+
+.post-content p {
+  margin: 10px 0;
+  font-size: 1.1rem;
+  line-height: 1.4;
+}
+
+.post-content a {
+  color: #0077cc;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.post-content a:hover {
+  text-decoration: underline;
+}
 /*
 .post-title {
   padding: 20px;
