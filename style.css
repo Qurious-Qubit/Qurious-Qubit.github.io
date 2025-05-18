@@ -53,7 +53,7 @@ body {
 
 /* Title Section */
 .title {
-  background-image: url('images/Background.gif');
+  background-image: url('images/home/Background.gif');
   background-size: cover;
   background-position: center;
   height: 400px;
@@ -265,6 +265,63 @@ body {
   text-align: left;
 }
 
+/* Team section styling */
+.team {
+  text-align: center;
+  padding: 50px 20px;
+  background-color: #f9f9f9;
+}
+
+/* Container for all team members */
+.team-members-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Individual team member card */
+.team-member {
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  width: 300px;
+  padding: 20px;
+  text-align: center;
+  transition: transform 0.3s;
+}
+
+.team-member:hover {
+  transform: translateY(-5px);
+}
+
+.member-image-container img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+}
+
+.role {
+  font-weight: bold;
+  color: #555;
+}
+
+.description{
+  font-style: italic;
+  font-size: 14px;
+  color: #666;
+}
+
+.bio {
+  font-size: 14px;
+  color: #666;
+}
+
+
 /* Footer */
 .footer {
   background-color: black;
@@ -334,5 +391,37 @@ body {
   }
   .post-layout {
     display: block;
+  }
+  .team-member {
+    width: calc(50% - 20px); /* Adjust for smaller gap */
+  }
+}
+
+@media (max-width: 768px) {
+  .team {
+    padding: 40px 20px;
+    width: 100%;
+  }
+  
+  .team-member {
+    width: 100%;
+    max-width: 400px;
+    min-width: auto;
+  }
+  
+  .member-image-container {
+    width: 160px;
+    height: 160px;
+  }
+  
+  .team h2 {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .member-image-container {
+    width: 140px;
+    height: 140px;
   }
 }
