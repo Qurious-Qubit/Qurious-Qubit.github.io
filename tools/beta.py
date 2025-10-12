@@ -57,7 +57,7 @@ def sort_key(folder):
             return (0, int(match.group(1)))  # Sort post1, post2 numerically
     return (1, folder)  # Sort other folders alphabetically
 
-folders.sort(key=sort_key)
+folders.sort(key=sort_key, reverse=True)
 
 for folder in folders:
     post_data = extract_post_data(folder)
