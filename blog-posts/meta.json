@@ -1,11 +1,5 @@
 [
   {
-    "title": "The Silent Force: How Electric Motors Power Everything",
-    "summary": "Look around you. The fan circulating air, the phone vibrating in your pocket, the refrigerator humming quietly in the kitchen. They all share a secret: a silent, powerful force that...",
-    "folder": "1ref_pos",
-    "thumbnail": ""
-  },
-  {
     "title": "Newton-Raphson Method: Finding Roots with Tangents",
     "summary": "Have you ever needed to find the exact point where a function crosses the x-axis? These points are called \"roots,\" and they're incredibly important in various fields, from engineering to...",
     "folder": "post4",
