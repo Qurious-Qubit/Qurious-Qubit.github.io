@@ -1,5 +1,17 @@
 [
   {
+    "title": "Demystifying Electromagnetic Simulation: A Hands-On Session with FEMM",
+    "summary": "Electromagnetism is the invisible force powering our modern world, from the hum of a transformer to the spin of a hard drive. But how do youseethe invisible? How do you...",
+    "folder": "post6",
+    "thumbnail": "post6/image1.jpg"
+  },
+  {
+    "title": "The Chameleon Chip: How FPGAs Adapt to Power Innovation",
+    "summary": "Look around you. The lightning-fast data center, the advanced medical imaging machine, the sophisticated defense system. They all share a secret: a flexible, powerful force that brings them to life...",
+    "folder": "post5",
+    "thumbnail": "post5/image1.jpg"
+  },
+  {
     "title": "Newton-Raphson Method: Finding Roots with Tangents",
     "summary": "Have you ever needed to find the exact point where a function crosses the x-axis? These points are called \"roots,\" and they're incredibly important in various fields, from engineering to...",
     "folder": "post4",
