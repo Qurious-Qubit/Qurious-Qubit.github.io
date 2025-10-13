@@ -1,6 +1,12 @@
 [
   {
     "title": "Newton-Raphson Method: Finding Roots with Tangents",
+    "summary": "No summary available.",
+    "folder": "1ref_pos",
+    "thumbnail": "1ref_pos/image1.png"
+  },
+  {
+    "title": "Newton-Raphson Method: Finding Roots with Tangents",
     "summary": "Have you ever needed to find the exact point where a function crosses the x-axis? These points are called \"roots,\" and they're incredibly important in various fields, from engineering to...",
     "folder": "post4",
     "thumbnail": "post4/image1.png"
