@@ -42,7 +42,7 @@ def extract_post_data(folder):
     '''
     if not thumb_file:
         thumb_file = next((f for f in os.listdir(folder_path)
-                        if f.lower().startswith('image1.') and f.lower().endswith('.jpg', '.png', '.jpeg', '.webp')), None)
+                        if f.lower().startswith('image1.') and f.lower().endswith(('.jpg', '.png', '.jpeg', '.webp'))), None)
         
     return {
         'title': title,
