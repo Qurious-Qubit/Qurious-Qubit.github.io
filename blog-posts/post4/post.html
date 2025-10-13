@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post - Qurious-Qubit</title>
+  <link rel="stylesheet" href="../../style.css">
+
+  <!-- KaTeX for Math rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.15.0/dist/katex.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.0/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <a href="../../index.html">About</a>
+    <a href="../../blog.html#blog">Blog</a>
+    <a href="../../team.html">Team</a>
+    <a href="../../contact.html">Contact</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <section>
+      <table class="post-layout">
+        <tr>
+          <td class="post-title" colspan="2">
+            <h1>Newton-Raphson Method: Finding Roots with Tangents</h1>
+          </td>
+        </tr>
+
+        <tr>
+          <td class="post-content-text">
+            <p>
+                Have you ever needed to find the exact point where a function crosses the x-axis? These points are called "roots," and they're incredibly important in various fields, from engineering to economics. While some functions have easily solvable roots, many don't. That's where numerical methods come in, and one of the most powerful and widely used is the Newton-Raphson method.
+            </p>
+
+            <h2>What is the Newton-Raphson Method?</h2>
+            <p>
+                At its core, the Newton-Raphson method is an iterative technique for finding successively better approximations to the roots (or zeroes) of a real-valued function. It leverages the idea of a tangent line to quickly home in on the root. Imagine you have a curve and you want to find where it hits the ground (the x-axis). The Newton-Raphson method essentially involves:
+            </p>
+            <ol>
+                <li><strong>Making an initial guess.</strong></li>
+                <li><strong>Drawing a tangent line at that guess.</strong></li>
+                <li><strong>Finding where that tangent line crosses the x-axis.</strong> This intersection point becomes your <em>new, improved guess</em>.</li>
+                <li><strong>Repeating the process</strong> until your guesses get extremely close to the actual root.</li>
+            </ol>
+            <p>This iterative process creates a sequence of approximations that typically converges very rapidly to the root.</p>
+
+            <h2>Derivation of the Formula</h2>
+            <p>
+                Now, let's get into the mathematics behind it.
+            </p>
+            <p>
+                Consider a function $f(x)$ and we want to find its root, i.e., $x$ such that $f(x) = 0$. Let's make an initial guess $x_n$. We want to find a better approximation, $x_{n+1}$.
+            </p>
+            <p>
+                The equation of the tangent line to the curve $y = f(x)$ at the point $(x_n, f(x_n))$ is given by:
+            </p>
+            <p>
+                <code>$y - f(x_n) = f'(x_n)(x - x_n)$</code>
+            </p>
+            <p>
+                where $f'(x_n)$ is the derivative of $f(x)$ evaluated at $x_n$.
+            </p>
+            <p>
+                We want to find where this tangent line intersects the x-axis. At the x-axis, $y = 0$. So, we substitute $y=0$ and let $x = x_{n+1}$ (our next approximation):
+            </p>
+            <p>
+                <code>$0 - f(x_n) = f'(x_n)(x_{n+1} - x_n)$</code>
+            </p>
+            <p>
+                Rearranging the terms to solve for $x_{n+1}$:
+            </p>
+            <p>
+                <code>$-f(x_n) = f'(x_n)(x_{n+1} - x_n)$</code>
+            </p>
+            <p>
+                <code>$\frac{-f(x_n)}{f'(x_n)} = x_{n+1} - x_n$</code>
+            </p>
+            <p>
+                This gives us the famous <strong>Newton-Raphson formula</strong>:
+            </p>
+            <p style="text-align:center; font-size: 1.2em; background-color:#f9f9f9; padding:10px; border-radius:5px;">
+                <strong><code>$x_{n+1} = x_n - \frac{f(x_n)}{f'(x_n)}$</code></strong>
+            </p>
+
+            <h2>How to Use It (Step-by-Step)</h2>
+            <ol>
+                <li><strong>Define your function</strong> $f(x)$.</li>
+                <li><strong>Calculate its derivative</strong> $f'(x)$.</li>
+                <li><strong>Choose an initial guess</strong> $x_0$. This guess should ideally be reasonably close to the root to ensure convergence.</li>
+                <li><strong>Iterate using the formula:</strong><br>
+                    $x_1 = x_0 - \frac{f(x_0)}{f'(x_0)}$<br>
+                    $x_2 = x_1 - \frac{f(x_1)}{f'(x_1)}$<br>
+                    ...and so on, until the difference between $x_{n+1}$ and $x_n$ is very small, or $f(x_n)$ is very close to zero.
+                </li>
+            </ol>
+
+            <h2>Example: Finding the Square Root of a Number</h2>
+            <p>
+                Let's say we want to find the square root of 2. This is equivalent to finding the root of the function $f(x) = x^2 - 2$.
+            </p>
+            <ol>
+                <li>$f(x) = x^2 - 2$</li>
+                <li>$f'(x) = 2x$</li>
+                <li>Let's choose an initial guess $x_0 = 1.5$.</li>
+            </ol>
+            <p>Now, let's iterate:</p>
+            <ul>
+                <li><strong>Iteration 1:</strong><br>
+                    $x_1 = 1.5 - \frac{(1.5)^2 - 2}{2(1.5)} = 1.5 - \frac{2.25 - 2}{3} = 1.5 - \frac{0.25}{3} \approx 1.4167$
+                </li>
+                <li><strong>Iteration 2:</strong><br>
+                    $x_2 = 1.4167 - \frac{(1.4167)^2 - 2}{2(1.4167)} = 1.4167 - \frac{2.0070 - 2}{2.8334} \approx 1.4142$
+                </li>
+            </ul>
+            <p>Notice how quickly we approached the actual value of $\sqrt{2} \approx 1.41421356$.</p>
+
+            <h2>Advantages and Limitations</h2>
+            <h3>Advantages:</h3>
+            <ul>
+                <li><strong>Rapid Convergence:</strong> When it converges, it does so very quickly, often quadratically (meaning the number of accurate decimal places roughly doubles with each iteration).</li>
+                <li><strong>Versatility:</strong> Can be applied to a wide range of differentiable functions.</li>
+            </ul>
+            <h3>Limitations:</h3>
+            <ul>
+                <li><strong>Requires Derivative:</strong> You need to be able to calculate the derivative of the function.</li>
+                <li><strong>Initial Guess Sensitivity:</strong> A poor initial guess can lead to slow convergence, divergence, or convergence to a different root.</li>
+                <li><strong>Division by Zero:</strong> If $f'(x_n) = 0$ at any point during the iteration, the method breaks down. This happens when the tangent line is horizontal.</li>
+            </ul>
+
+            <p>
+                The Newton-Raphson method is a cornerstone of numerical analysis, providing an efficient way to solve equations that are otherwise intractable. While it has its quirks, understanding its principles and limitations allows you to wield this powerful tool effectively in your mathematical and scientific pursuits.
+            </p>
+          </td>
+
+          <td class="post-content-image" id="image-container">
+            <!-- Images will be loaded here -->
+          </td>
+          
+        </tr>
+
+        <!-- Resources Section -->
+        <tr>
+          <td class="post-content-resources" colspan="2">
+            <h3>Resources:</h3>
+              <ul>
+                <li><a href="https://en.wikipedia.org/wiki/Wave_function" target="_blank">Wave function - Wikipedia</a></li>
+              </ul>
+          </td>
+        </tr>
+
+        <!-- References Section -->
+        <tr>
+          <td class="post-content-references" colspan="2">
+            <h3>References:</h3>
+            <ul class="small-text">
+              <li><a href="https://quantum.phys.cmu.edu/CQT/chaps/cqt02.pdf" target="_blank">Wave Functions</a></li>
+              <li><a href="https://ocw.mit.edu/courses/8-04-quantum-physics-i-spring-2013/resources/lecture-3/" target="_blank">Lecture 3: The Wave Function</a></li>
+            </ul>
+          </td>
+        </tr>
+      </table>
+    </section>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <p>
+      © 2025 Qurious-Qubit. All rights reserved |
+      <a href="../../contact.html">Contact</a><br>
+      <small>If any copyrighted content has been used unintentionally, please contact us for prompt removal.</small>
+    </p>
+  </div>
+
+  <!-- Render KaTeX Math -->
+  <script>
+    // Fetch the images.json file in the same directory as the HTML
+    fetch('images.json')
+      .then(response => response.json())
+      .then(images => {
+        const imageContainer = document.getElementById('image-container');
+        imageContainer.innerHTML = ""; // Clear any existing content in the image container
+  
+        // Loop through the images and create image elements
+        images.forEach(image => {
+          const img = document.createElement('img');
+          img.src = image;  // Use the image filename from images.json
+          img.alt = `Post Image - ${image}`;  // Set alt text for each image
+          img.className = 'post-image';  // Optional, to style images
+          imageContainer.appendChild(img);  // Append image to the container
+        });
+      })
+      .catch(error => console.error('Error loading images:', error));
+  </script>  
+</body>
+</html>
