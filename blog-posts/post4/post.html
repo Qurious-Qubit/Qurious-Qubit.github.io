@@ -148,7 +148,7 @@
           <td class="post-content-resources" colspan="2">
             <h3>Resources:</h3>
               <ul>
-                <li><a href="https://en.wikipedia.org/wiki/Wave_function" target="_blank">Wave function - Wikipedia</a></li>
+                <li><a href="https://en.wikipedia.org/wiki/Newton%27s_method" target="_blank">Newton's method - Wikipedia</a></li>
               </ul>
           </td>
         </tr>
@@ -157,10 +157,11 @@
         <tr>
           <td class="post-content-references" colspan="2">
             <h3>References:</h3>
-            <ul class="small-text">
-              <li><a href="https://quantum.phys.cmu.edu/CQT/chaps/cqt02.pdf" target="_blank">Wave Functions</a></li>
-              <li><a href="https://ocw.mit.edu/courses/8-04-quantum-physics-i-spring-2013/resources/lecture-3/" target="_blank">Lecture 3: The Wave Function</a></li>
-            </ul>
+              <ul>
+                <li><a href="https://en.wikipedia.org/wiki/Newton%27s_method" target="_blank">Newton's method - Wikipedia</a></li>
+                <li><a href="https://mathworld.wolfram.com/NewtonsMethod.html" target="_blank">Newton's Method - Wolfram MathWorld</a></li>
+                <li><a href="https://brilliant.org/wiki/newton-raphson-method/" target="_blank">Newton-Raphson Method - Brilliant.org</a></li>
+              </ul>
           </td>
         </tr>
       </table>
@@ -178,6 +179,37 @@
 
   <!-- Render KaTeX Math -->
   <script>
+    // Render all math expressions on the page
+    document.addEventListener("DOMContentLoaded", function() {
+      // Find all elements containing math expressions
+      const mathElements = document.querySelectorAll('.post-content-text');
+      
+      // Process each element
+      mathElements.forEach(element => {
+        // Process inline math (between $...$)
+        const inlineMathRegex = /\$([^$]+)\$/g;
+        element.innerHTML = element.innerHTML.replace(inlineMathRegex, (match, math) => {
+          try {
+            return katex.renderToString(math, { throwOnError: false });
+          } catch (e) {
+            console.error('KaTeX rendering error:', e);
+            return match;
+          }
+        });
+        
+        // Process display math (between $$...$$)
+        const displayMathRegex = /\$\$([^$]+)\$\$/g;
+        element.innerHTML = element.innerHTML.replace(displayMathRegex, (match, math) => {
+          try {
+            return katex.renderToString(math, { throwOnError: false, displayMode: true });
+          } catch (e) {
+            console.error('KaTeX rendering error:', e);
+            return match;
+          }
+        });
+      });
+    });
+
     // Fetch the images.json file in the same directory as the HTML
     fetch('images.json')
       .then(response => response.json())
