@@ -1,14 +1,14 @@
 [
   {
-    "title": "Beyond the Numbers: Why Math Matters and is Actually Beautiful!",
-    "summary": "For many, \"math\" conjures images of endless equations and textbooks. But what if I told you it's actually the secret language of the universe, an art form, and the engine...",
-    "folder": "post1",
-    "thumbnail": "post1/image1.jpg"
-  },
-  {
     "title": "Understanding Qubits",
     "summary": "Quantum computing relies on the superposition of states. A qubit can be represented as:|\u03c8\u27e9 = \u03b1|0\u27e9 + \u03b2|1\u27e9where \u03b1 and \u03b2 are complex numbers, and |0\u27e9 and |1\u27e9 are the...",
     "folder": "post2",
     "thumbnail": "post2/image1.jpg"
+  },
+  {
+    "title": "Beyond the Numbers: Why Math Matters and is Actually Beautiful!",
+    "summary": "For many, \"math\" conjures images of endless equations and textbooks. But what if I told you it's actually the secret language of the universe, an art form, and the engine...",
+    "folder": "post1",
+    "thumbnail": "post1/image1.jpg"
   }
 ]
