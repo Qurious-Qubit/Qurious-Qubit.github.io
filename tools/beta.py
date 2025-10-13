@@ -35,9 +35,15 @@ def extract_post_data(folder):
     # Find thumbnail (default fallback is optional)
     thumb_file = next((f for f in os.listdir(folder_path)
                       if f.lower().startswith('thumbnail') and f.lower().endswith(('.jpg', '.png', '.jpeg', '.webp'))), None)
+    
+    '''
     if not thumb_file:
         thumb_file = 'image1.jpg'  # Optional fallback
-
+    '''
+    if not thumb_file:
+        thumb_file = next((f for f in os.listdir(folder_path)
+                        if f.lower().startswith('image1.') and f.lower().endswith('.jpg', '.png', '.jpeg', '.webp')), None)
+        
     return {
         'title': title,
         'summary': summary,
