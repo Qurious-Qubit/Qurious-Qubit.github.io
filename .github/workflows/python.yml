@@ -27,12 +27,12 @@ jobs:
           python tools/alpha.py
           python tools/beta.py
           python tools/gamma.py
-          
+
       - name: Force commit all generated files
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          git add blog-posts/
+          git add .
           git commit -m "Auto-update: Regenerate all files [skip ci]" --allow-empty
           git pull --rebase
           git push
