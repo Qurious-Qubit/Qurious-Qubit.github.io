@@ -26,7 +26,8 @@ jobs:
         run: |
           python tools/alpha.py
           python tools/beta.py
-
+          python tools/gamma.py
+          
       - name: Force commit all generated files
         run: |
           git config --global user.name "GitHub Actions"
