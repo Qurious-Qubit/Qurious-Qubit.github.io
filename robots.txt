@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://qurious-qubit.github.io/sitemap.xml
