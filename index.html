@@ -17,13 +17,14 @@
     <a href="contact.html">Contact</a>
   </div>
 
-  <!-- Main Content -->
-  <div class="main-content">
-    <!-- Title with image -->
+
+  <div class="hero-overlay">   <!-- Title with image -->
     <section class="title">
       <h1>Qurious-Qubit</h1>
     </section>
-
+  </div>  
+  <!-- Main Content -->
+  <div class="main-content">
     <!-- About Section -->
     <section id="about" class="about">
       <h2>About Us</h2>
@@ -31,12 +32,81 @@
         We are a collective of inquisitive minds - students, enthusiasts, and lifelong learners
         driven by a passion for delving into the realms of quantum science, analog electronics, AI & ML.
         This blog serves as our digital canvas, where we document our explorations, share our projects
-        and reflect on the knowledge we acquire. Whether you're here to learn, collaborate, or simply
-        satiate your curiosity.
+        and reflect on the knowledge we acquire.
+      </p>
+      <p>
+        Our journey began with a simple question: "What if we could make complex scientific concepts 
+        accessible to everyone?" From that spark of curiosity, Qurious-Qubit was born. We believe that 
+        the most profound discoveries happen at the intersection of different fields, which is why we 
+        explore the connections between quantum physics, classical electronics, and artificial intelligence.
+      </p>
+      <p>
+        Whether you're here to learn, collaborate, or simply satiate your curiosity,
         <br>
         <b> Welcome to our "SPACE". </b>
       </p>
     </section>
+
+    <!-- Focus Areas -->
+    <section class="focus-areas">
+      <h2>Our Focus Areas</h2>
+      <div class="focus-grid">
+        <div class="focus-card">
+          <h3>Quantum Science</h3>
+          <p>Exploring the fascinating world of quantum mechanics, quantum computing, and quantum information theory through experiments, simulations, and thought-provoking discussions.</p>
+        </div>
+        <div class="focus-card">
+          <h3>Analog Electronics</h3>
+          <p>Building and analyzing analog circuits, from simple amplifiers to complex signal processing systems, bridging the gap between theory and practical implementation.</p>
+        </div>
+        <div class="focus-card">
+          <h3>AI & Machine Learning</h3>
+          <p>Developing and experimenting with artificial intelligence algorithms, neural networks, and machine learning models to solve real-world problems and push the boundaries of what's possible.</p>
+        </div>
+      </div>
+    </section>
+    <!-- Recent Posts -->
+    <section class="recent-posts-1">
+      <h2>Recent Posts</h2>
+      <div class="posts-grid-1" id="recent-posts-container">
+        <!-- Recent posts will be dynamically loaded here -->
+      </div>
+    </section>
+
+    <script>
+      // JS to dynamically load recent posts
+      fetch('blog-posts/meta.json')
+        .then(response => response.json())
+        .then(posts => {
+          const container = document.getElementById('recent-posts-container');
+          
+          // Get only the first 3 posts (latest)
+          const recentPosts = posts.slice(0, 3);
+          
+          recentPosts.forEach(post => {
+            const postCard = document.createElement('div');
+            postCard.className = 'post-card-1';
+            
+            const thumbnailPath = `blog-posts/${post.thumbnail}`;
+            const postHtmlPath = `blog-posts/${post.folder}/post.html`;
+            
+            postCard.innerHTML = `
+              <div class="post-image-1">
+                <img src="${thumbnailPath}" alt="${post.title}">
+              </div>
+              <div class="post-content-1">
+                <h3>${post.title}</h3>
+                <p>${post.summary}</p>
+                <a href="${postHtmlPath}" class="read-more-1">Read More →</a>
+              </div>
+            `;
+            
+            container.appendChild(postCard);
+          });
+        })
+        .catch(error => console.error('Error loading recent posts:', error));
+    </script>
+
   </div>
 
   <!-- Footer -->
