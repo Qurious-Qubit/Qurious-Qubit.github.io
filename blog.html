@@ -21,9 +21,15 @@
   <div class="main-content">
     <!-- Blog Section -->
     <section id="blog" class="blog">
-      <h2>Our Latest Blog Posts</h2>
+      <h2>Our Content Hub</h2>
+      <div class="blog-filters">
+        <button class="filter-btn active" data-filter="all">All Content</button>
+        <button class="filter-btn" data-filter="explore">Explore</button>
+        <button class="filter-btn" data-filter="debate">Debates</button>
+        <button class="filter-btn" data-filter="session">Sessions</button>
+      </div>
       <div class="blog-posts" id="blog-posts-container">
-        <!-- Blog post previews will be dynamically loaded here -->
+        <!-- Dynamic content will be filtered here -->
       </div>
     </section>
   </div>
@@ -61,11 +67,33 @@
               <a href="${postHtmlPath}">Read More</a>
             </div>
           `;
-
+          postDiv.setAttribute('data-category', post.category);
           container.appendChild(postDiv);
         });
       })
       .catch(error => console.error('Error loading blog previews:', error));
+
+
+    // Add filter functionality
+    function filterPosts(category) {
+      const posts = document.querySelectorAll('.post-preview');
+      posts.forEach(post => {
+        if (category === 'all' || post.getAttribute('data-category') === category) {
+          post.style.display = 'flex';
+        } else {
+          post.style.display = 'none';
+        }
+      });
+    }
+
+    // Add click events to filter buttons
+    document.querySelectorAll('.filter-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        filterPosts(button.getAttribute('data-filter'));
+      });
+    });
   </script>
 
 </body>

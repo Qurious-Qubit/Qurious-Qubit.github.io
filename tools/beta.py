@@ -23,6 +23,10 @@ def extract_post_data(folder):
     title_tag = soup.select_one('.post-title h1')
     title = title_tag.get_text(strip=True) if title_tag else 'Untitled'
 
+    # Extract category
+    category_tag = soup.select_one('.post-category')
+    category = category_tag.get_text(strip=True).lower() if category_tag else 'explore'
+
     # Extract summary: first <p> inside .post-content-text
     para_tag = soup.select_one('.post-content-text p')
     if para_tag:
@@ -43,14 +47,21 @@ def extract_post_data(folder):
     if not thumb_file:
         thumb_file = next((f for f in os.listdir(folder_path)
                         if f.lower().startswith('image1.') and f.lower().endswith(('.jpg', '.png', '.jpeg', '.webp'))), None)
-        
+    '''
     return {
         'title': title,
         'summary': summary,
         'folder': folder,
         'thumbnail': f'{folder}/{thumb_file}' if thumb_file else ''
     }
-
+    '''
+    return {
+    'title': title,
+    'summary': summary,
+    'folder': folder,
+    'thumbnail': f'{folder}/{thumb_file}' if thumb_file else '',
+    'category': category
+}
 # Collect and sort posts
 all_posts = []
 folders = [f for f in os.listdir(ROOT_DIR) if os.path.isdir(os.path.join(ROOT_DIR, f))]
