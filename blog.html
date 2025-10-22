@@ -56,7 +56,7 @@
           
           // Image path based on the meta.json content
           const thumbnailPath = `blog-posts/${post.thumbnail}`;
-          const postHtmlPath = `blog-posts/${post.folder}/post.html`; // Assuming each post has an index.html
+          const postHtmlPath = `blog-posts/${post.folder}/post.html`;
 
           // Setting up the inner HTML for the preview
           postDiv.innerHTML = `
@@ -70,30 +70,41 @@
           postDiv.setAttribute('data-category', post.category);
           container.appendChild(postDiv);
         });
+
+        // Add filter functionality
+        function filterPosts(category) {
+          const posts = document.querySelectorAll('.post-preview');
+          posts.forEach(post => {
+            if (category === 'all' || post.getAttribute('data-category') === category) {
+              post.style.display = 'flex';
+            } else {
+              post.style.display = 'none';
+            }
+          });
+        }
+
+        // Add click events to filter buttons
+        document.querySelectorAll('.filter-btn').forEach(button => {
+          button.addEventListener('click', () => {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+            filterPosts(button.getAttribute('data-filter'));
+          });
+        });
+
+        // ✅ MOVED INSIDE: Check URL parameters on page load
+        const urlParams = new URLSearchParams(window.location.search);
+        const filterFromUrl = urlParams.get('filter');
+
+        if (filterFromUrl) {
+            // Find and click the corresponding filter button
+            const targetButton = document.querySelector(`[data-filter="${filterFromUrl}"]`);
+            if (targetButton) {
+                targetButton.click();
+            }
+        }
       })
       .catch(error => console.error('Error loading blog previews:', error));
-
-
-    // Add filter functionality
-    function filterPosts(category) {
-      const posts = document.querySelectorAll('.post-preview');
-      posts.forEach(post => {
-        if (category === 'all' || post.getAttribute('data-category') === category) {
-          post.style.display = 'flex';
-        } else {
-          post.style.display = 'none';
-        }
-      });
-    }
-
-    // Add click events to filter buttons
-    document.querySelectorAll('.filter-btn').forEach(button => {
-      button.addEventListener('click', () => {
-        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-        button.classList.add('active');
-        filterPosts(button.getAttribute('data-filter'));
-      });
-    });
   </script>
 
 </body>
