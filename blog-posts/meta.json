@@ -3,36 +3,42 @@
     "title": "Demystifying Electromagnetic Simulation: A Hands-On Session with FEMM",
     "summary": "Electromagnetism is the invisible force powering our modern world, from the hum of a transformer to the spin of a hard drive. But how do youseethe invisible? How do you...",
     "folder": "post6",
-    "thumbnail": "post6/image1.jpg"
+    "thumbnail": "post6/image1.jpg",
+    "category": "session"
   },
   {
     "title": "The Chameleon Chip: How FPGAs Adapt to Power Innovation",
     "summary": "Look around you. The lightning-fast data center, the advanced medical imaging machine, the sophisticated defense system. They all share a secret: a flexible, powerful force that brings them to life...",
     "folder": "post5",
-    "thumbnail": "post5/image1.jpg"
+    "thumbnail": "post5/image1.jpg",
+    "category": "explore"
   },
   {
     "title": "Newton-Raphson Method: Finding Roots with Tangents",
     "summary": "Have you ever needed to find the exact point where a function crosses the x-axis? These points are called \"roots,\" and they're incredibly important in various fields, from engineering to...",
     "folder": "post4",
-    "thumbnail": "post4/image1.png"
+    "thumbnail": "post4/image1.png",
+    "category": "explore"
   },
   {
     "title": "The Ghost in the Machine: Unveiling the Quantum Wave Function",
     "summary": "Imagine a ripple on a pond. We can describe its height at any point, its speed, its direction. Now, imagine something far stranger: a \"ripple\" that exists not in water,...",
     "folder": "post3",
-    "thumbnail": "post3/image1.png"
+    "thumbnail": "post3/image1.png",
+    "category": "explore"
   },
   {
     "title": "The Silent Force: How Electric Motors Power Everything",
     "summary": "Look around you. The fan circulating air, the phone vibrating in your pocket, the refrigerator humming quietly in the kitchen. They all share a secret: a silent, powerful force that...",
     "folder": "post2",
-    "thumbnail": "post2/image1.png"
+    "thumbnail": "post2/image1.png",
+    "category": "explore"
   },
   {
     "title": "Beyond the Numbers: Why Math Matters and is Actually Beautiful!",
     "summary": "For many, \"math\" conjures images of endless equations and textbooks. But what if I told you it's actually the secret language of the universe, an art form, and the engine...",
     "folder": "post1",
-    "thumbnail": "post1/image1.jpg"
+    "thumbnail": "post1/image1.jpg",
+    "category": "explore"
   }
 ]
