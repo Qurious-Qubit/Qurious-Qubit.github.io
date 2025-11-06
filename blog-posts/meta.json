@@ -1,5 +1,12 @@
 [
   {
+    "title": "KiCad Kickstart: A Hands-On Guide to Your First PCB",
+    "summary": "Every complex electronic device you use, from your phone to a satellite, started as an idea. But how does that idea become a physical, working piece of hardware? How do...",
+    "folder": "post7",
+    "thumbnail": "post7/image1.png",
+    "category": "session"
+  },
+  {
     "title": "Demystifying Electromagnetic Simulation: A Hands-On Session with FEMM",
     "summary": "Electromagnetism is the invisible force powering our modern world, from the hum of a transformer to the spin of a hard drive. But how do youseethe invisible? How do you...",
     "folder": "post6",
