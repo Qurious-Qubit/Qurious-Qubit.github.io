@@ -78,6 +78,53 @@ def generate_sitemap():
 
     print(f"Detailed sitemap generated successfully at {sitemap_path}")
 
+def update_blog_with_hidden_links():
+    """
+    Updates blog.html with hidden links to all blog posts for SEO
+    """
+    blog_html_path = "blog.html"
+    
+    # Find all blog post directories
+    blog_posts = []
+    blog_dir = "blog-posts"
+    
+    if os.path.exists(blog_dir):
+        for folder in os.listdir(blog_dir):
+            post_path = os.path.join(blog_dir, folder, "post.html")
+            if os.path.exists(post_path):
+                blog_posts.append(folder)
+    
+    if not blog_posts:
+        print("No blog posts found to link")
+        return
+    
+    # Read current blog.html content
+    with open(blog_html_path, 'r', encoding='utf-8') as f:
+        content = f.read()
+    
+    # Generate hidden links HTML
+    hidden_links_html = '  <div style="display: none;" aria-hidden="true">\n'
+    for post_folder in sorted(blog_posts):
+        hidden_links_html += f'    <a href="blog-posts/{post_folder}/post.html">{post_folder}</a>\n'
+    hidden_links_html += '  </div>'
+    
+    # Check if hidden links already exist and update them
+    if '<div style="display: none;" aria-hidden="true">' in content:
+        # Replace existing hidden links
+        import re
+        pattern = r'<div style="display: none;" aria-hidden="true">.*?</div>'
+        new_content = re.sub(pattern, hidden_links_html, content, flags=re.DOTALL)
+    else:
+        # Insert hidden links before the footer
+        footer_pattern = '  <!-- Footer -->'
+        new_content = content.replace(footer_pattern, hidden_links_html + '\n\n' + footer_pattern)
+    
+    # Write updated content back
+    with open(blog_html_path, 'w', encoding='utf-8') as f:
+        f.write(new_content)
+    
+    print(f"Updated blog.html with {len(blog_posts)} hidden blog post links")
 
 if __name__ == "__main__":
     generate_sitemap()
+    update_blog_with_hidden_links()
