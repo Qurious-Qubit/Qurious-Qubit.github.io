@@ -1,5 +1,12 @@
 [
   {
+    "title": "The Unseen Clockmaker: How Digital Circuits Harness the Power of Delay",
+    "summary": "If you could design the perfect computer, wouldn't you want everything to happen instantly? Zero latency, infinite speed\u2014the ultimate machine. Here's the surprising truth: if we achieved that fantasy, our...",
+    "folder": "post8",
+    "thumbnail": "post8/image1.png",
+    "category": "explore"
+  },
+  {
     "title": "KiCad Kickstart: A Hands-On Guide to Your First PCB",
     "summary": "Every complex electronic device you use, from your phone to a satellite, started as an idea. But how does that idea become a physical, working piece of hardware? How do...",
     "folder": "post7",
