@@ -125,6 +125,104 @@ def update_blog_with_hidden_links():
     
     print(f"Updated blog.html with {len(blog_posts)} hidden blog post links")
 
+def update_blog_with_scrollable_archive():
+    """
+    Updates blog.html with a horizontally scrollable archive
+    """
+    blog_html_path = "blog.html"
+    
+    # Read the JSON to get post titles
+    meta_path = "blog-posts/meta.json"
+    posts = []
+    
+    try:
+        import json
+        with open(meta_path, 'r', encoding='utf-8') as f:
+            posts = json.load(f)
+    except Exception as e:
+        print(f"Could not read {meta_path}: {e}")
+        return
+    
+    if not posts:
+        print("No blog posts found to link")
+        return
+    
+    # Generate horizontally scrollable archive HTML
+    archive_html = '''
+  <!-- Horizontally Scrollable Blog Archive for SEO -->
+  <div class="scrollable-archive" style="margin-top: 3rem;">
+    <div style="margin-bottom: 0.5rem; font-weight: 500; color: #333;">
+      <small>ALL POSTS</small>
+    </div>
+    <div style="
+      overflow-x: auto;
+      overflow-y: hidden;
+      white-space: nowrap;
+      padding: 1rem 0;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: thin;
+    ">
+      <div style="display: inline-flex; gap: 1.5rem; padding: 0 0.5rem;">
+'''
+    
+    # Add all posts as inline elements
+    for post in posts:
+        archive_html += f'''        <a href="blog-posts/{post['folder']}/post.html" 
+           style="
+             display: inline-block;
+             padding: 0.75rem 1.25rem;
+             background: #f8f9fa;
+             border: 1px solid #e9ecef;
+             border-radius: 8px;
+             color: #0066cc;
+             text-decoration: none;
+             white-space: nowrap;
+             min-width: fit-content;
+             font-size: 0.9em;
+             transition: all 0.2s ease;
+           "
+           onmouseover="this.style.background='#e9ecef'; this.style.borderColor='#0066cc';"
+           onmouseout="this.style.background='#f8f9fa'; this.style.borderColor='#e9ecef';"
+        >
+          {post['title']}
+        </a>
+'''
+    
+    archive_html += '''      </div>
+    </div>
+    <div style="margin-top: 0.5rem; font-size: 0.8em; color: #666; text-align: center;">
+      <small>← Scroll to see all posts →</small>
+    </div>
+  </div>
+'''
+    
+    # Insert into blog.html
+    with open(blog_html_path, 'r', encoding='utf-8') as f:
+        content = f.read()
+    
+    # Remove any existing hidden links section first
+    if '<div style="display: none;" aria-hidden="true">' in content:
+        import re
+        pattern = r'<div style="display: none;" aria-hidden="true">.*?</div>'
+        content = re.sub(pattern, '', content, flags=re.DOTALL)
+    
+    # Insert scrollable archive before footer
+    footer_pattern = '  <!-- Footer -->'
+    if footer_pattern in content:
+        new_content = content.replace(footer_pattern, archive_html + '\n\n' + footer_pattern)
+    else:
+        # Fallback: append before closing body tag
+        body_pattern = '</body>'
+        new_content = content.replace(body_pattern, archive_html + '\n' + body_pattern)
+    
+    with open(blog_html_path, 'w', encoding='utf-8') as f:
+        f.write(new_content)
+    
+    print(f"✓ Updated blog.html with {len(posts)} posts in horizontally scrollable archive")
+    print("✓ Removed any existing hidden links")
+    print("✓ Archive is mobile-friendly with touch scrolling")
+
 if __name__ == "__main__":
     generate_sitemap()
-    update_blog_with_hidden_links()
+    #update_blog_with_hidden_links()
+    update_blog_with_scrollable_archive()
