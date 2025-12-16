@@ -1,5 +1,12 @@
 [
   {
+    "title": "The Lorentz Factor (\u03b3): Einstein's Multiplier of Spacetime",
+    "summary": "In the world of Special Relativity, physics takes a sharp turn away from our intuitive, everyday experience. Time, distance, and even energy are not absolute\u2014they are relative to the observer's...",
+    "folder": "post10",
+    "thumbnail": "post10/image1.png",
+    "category": "explore"
+  },
+  {
     "title": "The Impulse Response Paradox: Why Time-Varying Output Doesn't Mean a Time-Varying System",
     "summary": "If you're studying signals and systems, here's a moment of cognitive whiplash that many encounter: we say a system isLinear Time-Invariant (LTI)\u2014 its behavior doesn't change with time \u2014 but...",
     "folder": "post9",
