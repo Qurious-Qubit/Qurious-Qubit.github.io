@@ -72,7 +72,7 @@ def generate_sitemap():
 
 def update_blog_with_scrollable_archive():
     """
-    FIXED: Properly removes ALL duplicate archives before inserting a new one.
+    SUPER ROBUST: Removes ALL archive sections regardless of formatting.
     """
     blog_html_path = "blog.html"
     
@@ -136,111 +136,96 @@ def update_blog_with_scrollable_archive():
       <small>← Scroll to see all posts →</small>
     </div>
   </div>
+
 '''
     
     # Read current blog.html content
     with open(blog_html_path, 'r', encoding='utf-8') as f:
         content = f.read()
     
-    # CRITICAL FIX: Better regex pattern that matches the entire archive block
-    # This pattern captures from the comment through all three closing </div> tags
-    archive_pattern = r'  <!-- Horizontally Scrollable Blog Archive for SEO -->.*?</div>\s*\n\s*</div>\s*\n\s*</div>'
+    # NUCLEAR OPTION: Multiple passes with different patterns to catch all variations
     
-    # Count duplicates before removal
-    archive_count = len(re.findall(archive_pattern, content, flags=re.DOTALL))
-    print(f"🔍 Found {archive_count} archive section(s)")
+    # Pattern 1: Standard formatting (2-space indent)
+    pattern1 = r'  <!-- Horizontally Scrollable Blog Archive for SEO -->.*?</div>\s*\n\s*</div>\s*\n\s*</div>'
     
-    # Remove ALL instances of the archive (using re.DOTALL to match across newlines)
-    content = re.sub(archive_pattern, '', content, flags=re.DOTALL)
+    # Pattern 2: 4-space indent variation
+    pattern2 = r'    <!-- Horizontally Scrollable Blog Archive for SEO -->.*?</div>\s*\n\s*</div>\s*\n\s*</div>'
     
-    if archive_count > 0:
-        print(f"🧹 Removed all {archive_count} archive section(s)")
+    # Pattern 3: No indent
+    pattern3 = r'<!-- Horizontally Scrollable Blog Archive for SEO -->.*?</div>\s*\n\s*</div>\s*\n\s*</div>'
     
-    # SECOND: Remove any remaining whitespace artifacts
-    # Clean up multiple blank lines left behind
+    # Pattern 4: Ultra flexible - matches any whitespace
+    pattern4 = r'\s*<!-- Horizontally Scrollable Blog Archive for SEO -->.*?<small>← Scroll to see all posts →</small>\s*\n\s*</div>\s*\n\s*</div>'
+    
+    # Count before removal
+    initial_count = content.count('<!-- Horizontally Scrollable Blog Archive for SEO -->')
+    print(f"🔍 Found {initial_count} archive section(s) to remove")
+    
+    # Apply all patterns multiple times to ensure everything is caught
+    for i in range(3):  # Run 3 passes to catch nested issues
+        content = re.sub(pattern1, '', content, flags=re.DOTALL)
+        content = re.sub(pattern2, '', content, flags=re.DOTALL)
+        content = re.sub(pattern3, '', content, flags=re.DOTALL)
+        content = re.sub(pattern4, '', content, flags=re.DOTALL)
+    
+    # Verify removal
+    remaining = content.count('<!-- Horizontally Scrollable Blog Archive for SEO -->')
+    if remaining > 0:
+        print(f"⚠️  WARNING: {remaining} archive section(s) still remain!")
+    else:
+        print(f"🧹 Successfully removed all {initial_count} archive section(s)")
+    
+    # Clean up excessive whitespace
     content = re.sub(r'\n\s*\n\s*\n+', '\n\n', content)
     
-    # THIRD: Insert the NEW archive before the footer
+    # Find footer and insert NEW archive
     footer_pattern = '  <!-- Footer -->'
     
     if footer_pattern in content:
         # Insert the archive right before the footer
-        new_content = content.replace(footer_pattern, archive_html + '\n\n' + footer_pattern)
-        print(f"✅ Inserted NEW scrollable archive with {len(posts)} posts")
+        new_content = content.replace(footer_pattern, archive_html + footer_pattern, 1)  # Only replace first occurrence
+        print(f"✅ Inserted NEW scrollable archive with {len(posts)} posts before footer")
     else:
-        # Fallback: try to find any footer div
-        footer_div_pattern = r'(\s*<div class="footer">)'
-        match = re.search(footer_div_pattern, content)
-        if match:
-            new_content = content[:match.start()] + archive_html + '\n\n' + content[match.start():]
-            print(f"⚠️  Found alternative footer, inserted archive with {len(posts)} posts")
+        # Fallback: try to find footer div
+        footer_div_pattern = r'<div class="footer">'
+        if footer_div_pattern in content:
+            new_content = content.replace(footer_div_pattern, archive_html + '\n  <div class="footer">', 1)
+            print(f"⚠️  Inserted archive before footer div with {len(posts)} posts")
         else:
-            # Last resort: append before closing body tag
-            body_pattern = '</body>'
-            if body_pattern in content:
-                new_content = content.replace(body_pattern, archive_html + '\n' + body_pattern)
-                print(f"⚠️  Appended archive before </body> with {len(posts)} posts")
-            else:
-                print("❌ Could not find insertion point for archive")
-                return False
+            print("❌ Could not find insertion point for archive")
+            return False
     
     # Write updated content back
     with open(blog_html_path, 'w', encoding='utf-8') as f:
         f.write(new_content)
     
+    # Final verification
+    with open(blog_html_path, 'r', encoding='utf-8') as f:
+        final_content = f.read()
+    
+    final_count = final_content.count('<!-- Horizontally Scrollable Blog Archive for SEO -->')
+    if final_count == 1:
+        print(f"✅ SUCCESS! Exactly 1 archive section in final file")
+    else:
+        print(f"⚠️  WARNING: Final file has {final_count} archive sections (should be 1)")
+    
     print(f"📊 Total posts in archive: {len(posts)}")
     print("📱 Archive is mobile-friendly with touch scrolling")
     return True
-
-def clean_duplicate_archives():
-    """
-    Emergency function to clean up multiple archive sections.
-    Run this independently if needed.
-    """
-    blog_html_path = "blog.html"
-    
-    with open(blog_html_path, 'r', encoding='utf-8') as f:
-        content = f.read()
-    
-    # Find all archive sections
-    archive_pattern = r'  <!-- Horizontally Scrollable Blog Archive for SEO -->.*?</div>\s*\n\s*</div>\s*\n\s*</div>'
-    archive_count = len(re.findall(archive_pattern, content, flags=re.DOTALL))
-    
-    if archive_count == 0:
-        print("✅ No archive sections found")
-        return
-    elif archive_count == 1:
-        print("✅ Only one archive section found (correct state)")
-        return
-    
-    print(f"⚠️  Found {archive_count} duplicate archive sections")
-    
-    # Remove ALL archives
-    content = re.sub(archive_pattern, '', content, flags=re.DOTALL)
-    
-    # Clean up whitespace
-    content = re.sub(r'\n\s*\n\s*\n+', '\n\n', content)
-    
-    # Write cleaned content back
-    with open(blog_html_path, 'w', encoding='utf-8') as f:
-        f.write(content)
-    
-    print(f"🧹 Removed all {archive_count} archive section(s)")
-    print("⚠️  Run update_blog_with_scrollable_archive() to add a fresh archive")
 
 def main():
     """
     Main execution function with error handling
     """
     print("=" * 50)
-    print("Qurious-Qubit SEO Script")
+    print("Qurious-Qubit SEO Script - SUPER ROBUST VERSION")
     print("=" * 50)
     
     try:
         # 1. Generate sitemap
         url_count = generate_sitemap()
         
-        # 2. Update blog with scrollable archive (this now handles duplicate removal)
+        # 2. Update blog with scrollable archive
         success = update_blog_with_scrollable_archive()
         
         # 3. Final report
