@@ -1,6 +1,8 @@
 import os
+import re
+import json
 from datetime import datetime, timezone
-from xml.etree.ElementTree import Element, SubElement, tostring, Comment
+from xml.etree.ElementTree import Element, SubElement, tostring
 from xml.dom import minidom
 
 def generate_sitemap():
@@ -15,11 +17,9 @@ def generate_sitemap():
     ignore_list = ['.git', 'tools', '.ref', 'googleab578e53430b81a4.html']
     
     # --- Get current time in UTC for the <lastmod> tag ---
-    # Format: YYYY-MM-DDTHH:MM:SS+00:00
     now_utc = datetime.now(timezone.utc).isoformat(timespec='seconds')
 
     # --- XML Root Element with Namespaces ---
-    # This setup matches the required format exactly
     urlset_attrs = {
         "xmlns": "http://www.sitemaps.org/schemas/sitemap/0.9",
         "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance",
@@ -46,110 +46,53 @@ def generate_sitemap():
                 page_url = f"{base_url}/{relative_path}"
                 priority = "0.9" 
             else:
-                # Top-level pages like blog.html, contact.html, etc.
                 page_url = f"{base_url}/{relative_path}"
                 priority = "0.80"
 
             # --- Create XML elements for this URL ---
             url_element = SubElement(urlset, "url")
-            
             loc_element = SubElement(url_element, "loc")
             loc_element.text = page_url
-            
             lastmod_element = SubElement(url_element, "lastmod")
             lastmod_element.text = now_utc
-            
             priority_element = SubElement(url_element, "priority")
             priority_element.text = priority
 
     # --- Write the XML to a file with pretty printing ---
     xml_str = tostring(urlset, 'utf-8')
     pretty_xml_str = minidom.parseString(xml_str).toprettyxml(indent="  ")
-    
-    # The default pretty print adds an extra <?xml...> line, we remove it
-    # if it's not the first line.
     pretty_xml_str = "\n".join(pretty_xml_str.split("\n")[1:]) if pretty_xml_str.startswith("<?xml") else pretty_xml_str
 
-
     with open(sitemap_path, "w", encoding='utf-8') as f:
-        # We need to manually add the correct XML declaration
         f.write('<?xml version="1.0" encoding="UTF-8"?>\n')
         f.write(pretty_xml_str)
 
-    print(f"Detailed sitemap generated successfully at {sitemap_path}")
-
-def update_blog_with_hidden_links():
-    """
-    Updates blog.html with hidden links to all blog posts for SEO
-    """
-    blog_html_path = "blog.html"
-    
-    # Find all blog post directories
-    blog_posts = []
-    blog_dir = "blog-posts"
-    
-    if os.path.exists(blog_dir):
-        for folder in os.listdir(blog_dir):
-            post_path = os.path.join(blog_dir, folder, "post.html")
-            if os.path.exists(post_path):
-                blog_posts.append(folder)
-    
-    if not blog_posts:
-        print("No blog posts found to link")
-        return
-    
-    # Read current blog.html content
-    with open(blog_html_path, 'r', encoding='utf-8') as f:
-        content = f.read()
-    
-    # Generate hidden links HTML
-    hidden_links_html = '  <div style="display: none;" aria-hidden="true">\n'
-    for post_folder in sorted(blog_posts):
-        hidden_links_html += f'    <a href="blog-posts/{post_folder}/post.html">{post_folder}</a>\n'
-    hidden_links_html += '  </div>'
-    
-    # Check if hidden links already exist and update them
-    if '<div style="display: none;" aria-hidden="true">' in content:
-        # Replace existing hidden links
-        import re
-        pattern = r'<div style="display: none;" aria-hidden="true">.*?</div>'
-        new_content = re.sub(pattern, hidden_links_html, content, flags=re.DOTALL)
-    else:
-        # Insert hidden links before the footer
-        footer_pattern = '  <!-- Footer -->'
-        new_content = content.replace(footer_pattern, hidden_links_html + '\n\n' + footer_pattern)
-    
-    # Write updated content back
-    with open(blog_html_path, 'w', encoding='utf-8') as f:
-        f.write(new_content)
-    
-    print(f"Updated blog.html with {len(blog_posts)} hidden blog post links")
+    print(f"✅ Sitemap generated successfully at {sitemap_path}")
+    return len(urlset)
 
 def update_blog_with_scrollable_archive():
     """
-    Updates blog.html with a horizontally scrollable archive
+    CORRECTED: Replaces any existing scrollable archive with an updated one.
+    Uses robust pattern matching to avoid duplication.
     """
     blog_html_path = "blog.html"
     
     # Read the JSON to get post titles
     meta_path = "blog-posts/meta.json"
-    posts = []
     
     try:
-        import json
         with open(meta_path, 'r', encoding='utf-8') as f:
             posts = json.load(f)
     except Exception as e:
-        print(f"Could not read {meta_path}: {e}")
-        return
+        print(f"❌ Could not read {meta_path}: {e}")
+        return False
     
     if not posts:
-        print("No blog posts found to link")
-        return
+        print("❌ No blog posts found to link")
+        return False
     
     # Generate horizontally scrollable archive HTML
-    archive_html = '''
-  <!-- Horizontally Scrollable Blog Archive for SEO -->
+    archive_html = '''  <!-- Horizontally Scrollable Blog Archive for SEO -->
   <div class="scrollable-archive" style="margin-top: 3rem;">
     <div style="margin-bottom: 0.5rem; font-weight: 500; color: #333;">
       <small>ALL POSTS</small>
@@ -196,33 +139,134 @@ def update_blog_with_scrollable_archive():
   </div>
 '''
     
-    # Insert into blog.html
+    # Read current blog.html content
     with open(blog_html_path, 'r', encoding='utf-8') as f:
         content = f.read()
     
-    # Remove any existing hidden links section first
-    if '<div style="display: none;" aria-hidden="true">' in content:
-        import re
-        pattern = r'<div style="display: none;" aria-hidden="true">.*?</div>'
-        content = re.sub(pattern, '', content, flags=re.DOTALL)
+    # FIRST: Remove ALL existing scrollable archives (prevent duplication)
+    # This pattern matches from the comment to the closing </div> of the archive
+    archive_pattern = r'<!-- Horizontally Scrollable Blog Archive for SEO -->.*?</div>\s*</div>\s*</div>'
     
-    # Insert scrollable archive before footer
+    # Remove ALL instances of the archive
+    content, archive_count = re.subn(archive_pattern, '', content, flags=re.DOTALL)
+    if archive_count > 0:
+        print(f"🧹 Removed {archive_count} duplicate archive section(s)")
+    
+    # SECOND: Remove any remaining hidden links
+    hidden_pattern = r'<div style="display: none;" aria-hidden="true">.*?</div>'
+    content, hidden_count = re.subn(hidden_pattern, '', content, flags=re.DOTALL)
+    if hidden_count > 0:
+        print(f"🧹 Removed {hidden_count} hidden link section(s)")
+    
+    # THIRD: Insert the NEW archive before the footer
+    # Find the EXACT footer pattern (with proper indentation)
     footer_pattern = '  <!-- Footer -->'
-    if footer_pattern in content:
-        new_content = content.replace(footer_pattern, archive_html + '\n\n' + footer_pattern)
-    else:
-        # Fallback: append before closing body tag
-        body_pattern = '</body>'
-        new_content = content.replace(body_pattern, archive_html + '\n' + body_pattern)
     
+    if footer_pattern in content:
+        # Insert the archive right before the footer
+        new_content = content.replace(footer_pattern, archive_html + '\n\n' + footer_pattern)
+        print(f"✅ Inserted scrollable archive with {len(posts)} posts")
+    else:
+        # Fallback: try to find any footer div
+        footer_div_pattern = r'(\s*<div class="footer">)'
+        match = re.search(footer_div_pattern, content)
+        if match:
+            new_content = content[:match.start()] + archive_html + '\n\n' + content[match.start():]
+            print(f"⚠️  Found alternative footer, inserted archive with {len(posts)} posts")
+        else:
+            # Last resort: append before closing body tag
+            body_pattern = '</body>'
+            if body_pattern in content:
+                new_content = content.replace(body_pattern, archive_html + '\n' + body_pattern)
+                print(f"⚠️  Appended archive before </body> with {len(posts)} posts")
+            else:
+                print("❌ Could not find insertion point for archive")
+                return False
+    
+    # Write updated content back
     with open(blog_html_path, 'w', encoding='utf-8') as f:
         f.write(new_content)
     
-    print(f"✓ Updated blog.html with {len(posts)} posts in horizontally scrollable archive")
-    print("✓ Removed any existing hidden links")
-    print("✓ Archive is mobile-friendly with touch scrolling")
+    print(f"📊 Total posts in archive: {len(posts)}")
+    print("📱 Archive is mobile-friendly with touch scrolling")
+    return True
+
+def clean_duplicate_archives():
+    """
+    Emergency function to clean up multiple archive sections.
+    Run this once if your blog.html has duplicates.
+    """
+    blog_html_path = "blog.html"
+    
+    with open(blog_html_path, 'r', encoding='utf-8') as f:
+        content = f.read()
+    
+    # Find all archive sections
+    archive_pattern = r'<!-- Horizontally Scrollable Blog Archive for SEO -->.*?</div>\s*</div>\s*</div>'
+    archives = re.findall(archive_pattern, content, re.DOTALL)
+    
+    if len(archives) <= 1:
+        print("✅ No duplicates found")
+        return
+    
+    print(f"⚠️  Found {len(archives)} duplicate archive sections")
+    
+    # Keep only the FIRST archive
+    content = re.sub(archive_pattern, '', content, flags=re.DOTALL)
+    
+    # Now we need to add one back before the footer
+    footer_pattern = '  <!-- Footer -->'
+    if footer_pattern in content:
+        # We'll need to generate a fresh archive - call the main function
+        update_blog_with_scrollable_archive()
+    else:
+        # Write cleaned content back
+        with open(blog_html_path, 'w', encoding='utf-8') as f:
+            f.write(content)
+        print(f"🧹 Removed {len(archives)-1} duplicate archive(s)")
+
+def main():
+    """
+    Main execution function with error handling
+    """
+    print("=" * 50)
+    print("Qurious-Qubit SEO Script")
+    print("=" * 50)
+    
+    try:
+        # 1. Generate sitemap
+        url_count = generate_sitemap()
+        
+        # 2. Check if we need to clean duplicates first
+        blog_html_path = "blog.html"
+        if os.path.exists(blog_html_path):
+            with open(blog_html_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+            
+            # Count how many archive sections exist
+            archive_count = content.count('<!-- Horizontally Scrollable Blog Archive for SEO -->')
+            if archive_count > 1:
+                print(f"⚠️  Found {archive_count} archive sections (should be 1)")
+                clean_duplicate_archives()
+        
+        # 3. Update with scrollable archive
+        success = update_blog_with_scrollable_archive()
+        
+        # 4. Final report
+        print("\n" + "=" * 50)
+        print("SCRIPT EXECUTION COMPLETE")
+        print("=" * 50)
+        print(f"• Sitemap URLs: {url_count}")
+        print(f"• Archive updated: {'✅' if success else '❌'}")
+        print("\nNext steps:")
+        print("1. Commit and push changes to GitHub")
+        print("2. Submit sitemap in Google Search Console")
+        print("3. Wait 24-48 hours for Google to crawl")
+        
+    except Exception as e:
+        print(f"❌ Script failed with error: {e}")
+        import traceback
+        traceback.print_exc()
 
 if __name__ == "__main__":
-    generate_sitemap()
-    #update_blog_with_hidden_links()
-    update_blog_with_scrollable_archive()
+    main()
