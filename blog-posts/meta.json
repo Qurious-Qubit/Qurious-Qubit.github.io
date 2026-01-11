@@ -1,5 +1,12 @@
 [
   {
+    "title": "The Function That Is Its Own Derivative: How Taylor Series Reveals Nature's Fundamental Equation",
+    "summary": "In the vast landscape of mathematical functions, there exists one that possesses a magical property:its derivative is exactly equal to itself. This function, known as the exponential function $e^x$, appears...",
+    "folder": "post12",
+    "thumbnail": "",
+    "category": "mathematics"
+  },
+  {
     "title": "De Broglie's Matter Waves: The Quantum Connection Between Particles and Waves",
     "summary": "The early 20th century witnessed a quantum revolution that shattered classical physics. Einstein had shown that light, traditionally understood as a wave, behaved like particles (photons) in phenomena like the...",
     "folder": "post11",
