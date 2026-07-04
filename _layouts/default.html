@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{{ page.title }}</title>
+  <link rel="stylesheet" href="{{ '/style.css' | relative_url }}">
+  <meta name="google-site-verification" content="A6tGKS6Au8qsjAu1pLHuQjaDp0cm0EYggHluYl38uoA" />
+  
+  <script>
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  </script>
+</head>
+<body>
+
+  <div class="navbar">
+    <a href="{{ '/' | relative_url }}">About</a>
+    <a href="{{ '/blog.html' | relative_url }}">Blog</a>
+    <a href="{{ '/team.html' | relative_url }}">Team</a>
+    <a href="{{ '/contact.html' | relative_url }}">Contact</a>
+    <button id="theme-toggle">🌓 Toggle Theme</button>
+  </div>
+
+  {{ content }}
+
+  <div class="footer">
+    <p>
+      © 2026 Qurious-Qubit. All rights reserved |
+      <a href="{{ '/contact.html' | relative_url }}">Contact</a><br>
+      <small>If any copyrighted content has been used unintentionally, please contact us for prompt removal.</small>
+    </p>
+  </div>
+
+  <script>
+    const toggleBtn = document.getElementById('theme-toggle');
+    const root = document.documentElement;
+
+    toggleBtn.addEventListener('click', () => {
+      const currentTheme = root.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      
+      root.setAttribute('data-theme', newTheme);
+      localStorage.setItem('theme', newTheme);
+      
+      // Tell the rest of the site (specifically index.html) that the theme changed
+      window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme: newTheme } }));
+    });
+  </script>
+
+</body>
+</html>

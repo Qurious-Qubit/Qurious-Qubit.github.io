@@ -1,134 +1,128 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Qurious-Qubit</title>
-  <link rel="stylesheet" href="style.css">
-  <meta name="google-site-verification" content="A6tGKS6Au8qsjAu1pLHuQjaDp0cm0EYggHluYl38uoA" />
-</head>
-<body>
-
-  <!-- Navbar -->
-  <div class="navbar">
-    <a href="#about">About</a>
-    <a href="blog.html">Blog</a>
-    <a href="team.html">Team</a>
-    <a href="contact.html">Contact</a>
+---
+layout: default
+title: Qurious-Qubit
+---
+<div class="hero-wrapper">
+  <div id="particles-js"></div>
+  <div class="hero-content">
+    <h1>Qurious-Qubit</h1>
   </div>
+</div>  
 
+<div class="main-content">
+  <section id="about" class="about">
+    <h2>About Us</h2>
+    <p>We are a collective of inquisitive minds - students, enthusiasts, and lifelong learners driven by a passion for delving into the realms of magnetics, quantum science, analog electronics, AI & ML and what not everything.</p>
+    <p>This blog serves as our digital canvas, where we document our explorations, share our projects, reflect on the knowledge we acquire, and provide a platform for anyone interested to share their insights.</p>
+    <p>Our journey began with a simple question: "What if we could make complex concepts accessible to everyone?" We believe that the most profound discoveries happen at the intersection of different fields - bridging quantum physics with biology, classical electronics with social sciences.</p>
+    <p>Whether you're here to learn, collaborate, or simply satiate your curiosity,<br><b>Welcome to our "SPACE".</b></p>
+  </section>
 
-  <div class="hero-overlay">   <!-- Title with image -->
-    <section class="title">
-      <h1>Qurious-Qubit</h1>
-    </section>
-  </div>  
-  <!-- Main Content -->
-  <div class="main-content">
-    <!-- About Section -->
-    <section id="about" class="about">
-      <h2>About Us</h2>
-      <p>
-        We are a collective of inquisitive minds - students, enthusiasts, and lifelong learners
-        driven by a passion for delving into the realms of magnetics, quantum science, analog electronics, AI & ML and what not everything.
-        From biology to social sciences, from history to geography - anything that exists, has existed, could exist or even couldn't exist. 
-        We are simply curious about it all.
-      </p>
-      <p>
-        This blog serves as our digital canvas, where we document our explorations, share our projects,
-        reflect on the knowledge we acquire, and provide a platform for anyone interested to share their insights.
-        A space where curious minds can get noticed without getting washed away in the vast ocean of big websites 
-        and social media platforms.
-      </p>
-      <p>
-        Our journey began with a simple question: "What if we could make complex concepts 
-        accessible to everyone?" From that spark of curiosity, Qurious-Qubit was born. We believe that 
-        the most profound discoveries happen at the intersection of different fields, which is why we 
-        explore connections without boundaries - bridging quantum physics with biology, classical electronics 
-        with social sciences, and artificial intelligence with history. No subject is off-limits in our 
-        quest for understanding.
-      </p>
-      <p>
-        Whether you're here to learn, collaborate, or simply satiate your curiosity,
-        <br>
-        <b> Welcome to our "SPACE". </b>
-      </p>
-    </section>
-
-    <!-- Focus Areas -->
-    <section class="focus-areas">
-      <h2>Our Engagement Formats</h2>
-      <div class="focus-grid">
-        <div class="focus-card">
-          <h3>Explore</h3>
-          <p>Deep-dive articles and research pieces where we unravel complex topics, share discoveries, and satisfy our curiosity about everything from physics to history.</p>
-          <a href="blog.html?filter=explore" class="read-more-1">Browse Explore Posts →</a>
-        </div>
-        <div class="focus-card">
-          <h3>Debates</h3>
-          <p>Live discussions and thought-provoking exchanges on controversial topics, emerging technologies, and scientific controversies that shape our understanding.</p>
-          <a href="blog.html?filter=debate" class="read-more-1">Browse Debate Posts →</a>
-        </div>
-        <div class="focus-card">
-          <h3>Sessions</h3>
-          <p>Interactive workshops, technical trainings, and hands-on learning experiences designed to build practical skills and share knowledge with our community.</p>
-          <a href="blog.html?filter=session" class="read-more-1">Browse Session Posts →</a>
-        </div>
+  <section class="focus-areas">
+    <h2>Our Engagement Formats</h2>
+    <div class="focus-grid">
+      <div class="focus-card">
+        <h3>Explore</h3>
+        <p>Deep-dive articles and research pieces where we unravel complex topics, share discoveries, and satisfy our curiosity.</p>
+        <a href="{{ '/blog.html?filter=explore' | relative_url }}" class="read-more-1">Browse Explore Posts →</a>
       </div>
-    </section>
-
-    <!-- Recent Posts -->
-    <section class="recent-posts-1">
-      <h2>Recent Posts</h2>
-      <div class="posts-grid-1" id="recent-posts-container">
-        <!-- Recent posts will be dynamically loaded here -->
+      <div class="focus-card">
+        <h3>Debates</h3>
+        <p>Live discussions and thought-provoking exchanges on controversial topics, emerging technologies, and scientific controversies.</p>
+        <a href="{{ '/blog.html?filter=debate' | relative_url }}" class="read-more-1">Browse Debate Posts →</a>
       </div>
-    </section>
+      <div class="focus-card">
+        <h3>Sessions</h3>
+        <p>Interactive workshops, technical trainings, and hands-on learning experiences designed to build practical skills.</p>
+        <a href="{{ '/blog.html?filter=session' | relative_url }}" class="read-more-1">Browse Session Posts →</a>
+      </div>
+    </div>
+  </section>
 
-    <script>
-      // JS to dynamically load recent posts
-      fetch('blog-posts/meta.json')
-        .then(response => response.json())
-        .then(posts => {
-          const container = document.getElementById('recent-posts-container');
-          
-          // Get only the first 3 posts (latest)
-          const recentPosts = posts.slice(0, 3);
-          
-          recentPosts.forEach(post => {
-            const postCard = document.createElement('div');
-            postCard.className = 'post-card-1';
-            
-            const thumbnailPath = `blog-posts/${post.thumbnail}`;
-            const postHtmlPath = `blog-posts/${post.folder}/post.html`;
-            
-            postCard.innerHTML = `
-              <div class="post-image-1">
-                <img src="${thumbnailPath}" alt="${post.title}">
-              </div>
-              <div class="post-content-1">
-                <h3>${post.title}</h3>
-                <p>${post.summary}</p>
-                <a href="${postHtmlPath}" class="read-more-1">Read More →</a>
-              </div>
-            `;
-            
-            container.appendChild(postCard);
-          });
-        })
-        .catch(error => console.error('Error loading recent posts:', error));
-    </script>
+  <section class="recent-posts-1">
+    <h2>Recent Posts</h2>
+    <div class="posts-grid-1" id="recent-posts-container">
+      </div>
+  </section>
+</div>
 
-  </div>
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
-  <!-- Footer -->
-  <div class="footer">
-    <p>
-      © 2025 Qurious-Qubit. All rights reserved |
-      <a href="contact.html">Contact</a><br>
-      <small>If any copyrighted content has been used unintentionally, please contact us for prompt removal.</small>
-    </p>
-  </div>
+<script>
+  // -- PARTICLE LOGIC --
+  function initParticles(theme) {
+    if (window.pJSDom && window.pJSDom.length > 0) {
+        window.pJSDom[0].pJS.fn.vendors.destroypJS();
+        window.pJSDom = [];
+    }
 
-</body>
-</html>
+    const particleColor = theme === 'dark' ? '#00ffff' : '#0066cc';
+    const linkColor = theme === 'dark' ? '#ff00ff' : '#2575fc';
+
+    particlesJS("particles-js", {
+      "particles": {
+        "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+        "color": { "value": particleColor },
+        "shape": { "type": "circle" },
+        "opacity": { "value": 0.6, "random": false },
+        "size": { "value": 3, "random": true },
+        "line_linked": {
+          "enable": true, "distance": 150, "color": linkColor, "opacity": 0.5, "width": 1
+        },
+        "move": { "enable": true, "speed": 2, "out_mode": "out" }
+      },
+      "interactivity": {
+        "detect_on": "canvas",
+        "events": {
+          "onhover": { "enable": true, "mode": "grab" },
+          "onclick": { "enable": true, "mode": "push" },
+          "resize": true
+        },
+        "modes": {
+          "grab": { "distance": 140, "line_linked": { "opacity": 1 } },
+          "push": { "particles_nb": 4 }
+        }
+      },
+      "retina_detect": true
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initParticles(document.documentElement.getAttribute('data-theme') || 'light');
+  });
+
+  // Listen for the toggle switch from default.html
+  window.addEventListener('themeChanged', (e) => {
+    initParticles(e.detail.theme);
+  });
+
+  // -- FETCH LOGIC (Fixed Paths) --
+  fetch('{{ "/blog-posts/meta.json" | relative_url }}')
+    .then(response => response.json())
+    .then(posts => {
+      const container = document.getElementById('recent-posts-container');
+      const recentPosts = posts.slice(0, 3);
+      
+      recentPosts.forEach(post => {
+        const postCard = document.createElement('div');
+        postCard.className = 'post-card-1';
+        
+        // Dynamically build correct Jekyll paths
+        const thumbnailPath = `{{ "/blog-posts/" | relative_url }}${post.thumbnail}`;
+        const postHtmlPath = `{{ "/blog-posts/" | relative_url }}${post.folder}/post.html`;
+        
+        postCard.innerHTML = `
+          <div class="post-image-1">
+            <img src="${thumbnailPath}" alt="${post.title}">
+          </div>
+          <div class="post-content-1">
+            <h3>${post.title}</h3>
+            <p>${post.summary}</p>
+            <a href="${postHtmlPath}" class="read-more-1">Read More →</a>
+          </div>
+        `;
+        container.appendChild(postCard);
+      });
+    })
+    .catch(error => console.error('Error loading recent posts:', error));
+</script>
