@@ -15,8 +15,8 @@
   --card-alt-bg: #f9f9f9;
   
   /* Hero Specifics for Light Mode */
-  --particle-bg: #e2e8f0; /* Soft cool gray so blue particles pop */
-  --hero-bg: rgba(255, 255, 255, 0.85); /* Frosted white */
+  --particle-bg: #e2e8f0; 
+  --hero-bg: rgba(255, 255, 255, 0.85); 
   --hero-text: #1a202c;
   --hero-glow: 0 0 25px rgba(37, 117, 252, 0.4);
 }
@@ -37,8 +37,8 @@
   --card-alt-bg: #21262d;
   
   /* Hero Specifics for Dark Mode */
-  --particle-bg: #010409; /* Deep space */
-  --hero-bg: rgba(0, 0, 0, 0.7); /* Frosted dark */
+  --particle-bg: #010409; 
+  --hero-bg: rgba(0, 0, 0, 0.7); 
   --hero-text: #ffffff;
   --hero-glow: 0 0 25px rgba(0, 255, 255, 0.4);
 }
@@ -46,8 +46,9 @@
 /* Reset & Global */
 * { box-sizing: border-box; }
 
-body {
+body, html {
   margin: 0;
+  padding: 0;
   font-family: 'Segoe UI', sans-serif;
   background-color: var(--bg-color);
   color: var(--text-color);
@@ -55,12 +56,14 @@ body {
   display: flex;
   flex-direction: column;
   transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden; /* Prevents mobile side-scrolling blowouts */
 }
 
 /* Navbar */
 .navbar {
   background-color: var(--navbar-bg);
   height: 8vh;
+  min-height: 60px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -102,6 +105,7 @@ body {
 /* Main Content */
 .main-content {
   max-width: 1200px;
+  width: 100%;
   margin: 0 auto;
   padding: 40px 20px;
   margin-top: 8vh; 
@@ -137,6 +141,7 @@ body {
   z-index: 2;
   text-align: center;
   pointer-events: none;
+  width: 90%; /* Stops edge-touching on mobile */
 }
 
 .hero-content h1 {
@@ -148,6 +153,7 @@ body {
   border-radius: 10px;
   border: 1px solid var(--border-color);
   transition: all 0.3s ease;
+  margin: 0;
 }
 
 /* About Section */
@@ -191,7 +197,7 @@ body {
 
 .focus-grid, .posts-grid-1, .team-members-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* slightly narrower min-width */
   gap: 30px;
 }
 
@@ -228,7 +234,7 @@ body {
 
 /* Blog Page */
 .blog {
-  padding: 15px 40px;
+  padding: 30px;
   background-color: var(--card-bg);
   color: var(--text-color);
   display: flex;
@@ -238,6 +244,13 @@ body {
   flex-direction: column;
   border-radius: 10px;
   margin-bottom: 30px;
+}
+
+.blog-filters {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
 }
 
 .filter-btn {
@@ -250,7 +263,6 @@ body {
   font-weight: 500;
   font-size: 0.9rem;
   transition: all 0.2s ease;
-  margin: 0 5px;
 }
 
 .filter-btn:hover { background: var(--border-color); }
@@ -262,7 +274,7 @@ body {
   background-color: var(--card-alt-bg);
   color: var(--text-color);
   max-width: 800px;
-  width: 90%;
+  width: 100%;
   min-height: 200px;
   border-radius: 12px;
   overflow: hidden;
@@ -316,23 +328,51 @@ body {
 }
 .footer a { color: var(--accent-1); text-decoration: none; }
 
-/* Media Queries */
-@media (min-width: 1200px) {
-  .navbar { height: 80px; }
-  .navbar a { font-size: clamp(18px, 1.5vw, 22px); }
-  .about h2 { font-size: 2.5rem; }
-}
+
+/* --- THE MAGIC FIX: AGGRESSIVE MOBILE MEDIA QUERY --- */
 @media (max-width: 768px) {
-  .navbar { height: 10vh; }
-  .navbar a { font-size: clamp(12px, 2vw, 16px); }
-  .main-content { margin-top: 10vh; padding: 20px; }
-  .about { padding: 40px 20px; }
-  .about h2 { font-size: 1.8rem; }
+  /* Navbar Overhaul */
+  .navbar { 
+    height: auto; 
+    padding: 10px 5px; 
+    flex-wrap: wrap; /* Allows links to wrap to a second line instead of stretching off-screen */
+    gap: 8px;
+  }
+  .navbar a { 
+    font-size: 14px; 
+    margin: 0 5px; 
+  }
+  #theme-toggle {
+    margin: 5px 0 0 0;
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+
+  /* Hero Section Overhaul */
+  .hero-content h1 {
+    font-size: 2.2rem; /* Shrinks the massive title */
+    padding: 15px 20px;
+  }
+  
+  /* Main content spacing */
+  .main-content { 
+    margin-top: 12vh; /* Extra breathing room for wrapped navbar */
+    padding: 20px 10px; 
+  }
+  
+  /* Blog Layout Fixes */
+  .blog { padding: 20px 10px; }
   .post-preview { flex-direction: column; height: auto; }
   .post-preview img { width: 100%; height: 200px; }
+  
+  /* Individual Post Fixes */
   .post-content-text { width: 100%; padding: 10px; }
   .post-content-image { width: 100%; padding: 10px; }
   .post-layout, .post-layout tbody, .post-layout tr, .post-layout td { display: block; width: 100%; }
-  .team { padding: 40px 20px; width: 100%; }
+  
+  /* About / Team Fixes */
+  .about { padding: 30px 15px; }
+  .about h2 { font-size: 1.8rem; }
+  .team { padding: 40px 15px; width: 100%; }
   .team-member { width: 100%; max-width: 400px; }
 }
