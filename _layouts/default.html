@@ -13,7 +13,7 @@
   </script>
 </head>
 <body>
-
+  <canvas id="cursor-canvas" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9999; display: block; margin: 0; padding: 0;"></canvas>
   <div class="navbar">
     <a href="{{ '/' | relative_url }}">About</a>
     <a href="{{ '/blog.html' | relative_url }}">Blog</a>
@@ -47,6 +47,141 @@
       window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme: newTheme } }));
     });
   </script>
+  <script>
+    const canvas = document.getElementById('cursor-canvas');
+    const ctx = canvas.getContext('2d');
+    
+    let width, height;
+    let mouse = { x: -1000, y: -1000, vx: 0, vy: 0 };
+    let lastMouse = { x: -1000, y: -1000 };
+    
+    let trailParticles = [];
+    let boomParticles = [];
 
+    function resize() {
+      width = window.innerWidth;
+      height = window.innerHeight;
+      canvas.width = width;
+      canvas.height = height;
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    window.addEventListener('mousemove', (e) => {
+      lastMouse.x = mouse.x;
+      lastMouse.y = mouse.y;
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+      mouse.vx = mouse.x - lastMouse.x;
+      mouse.vy = mouse.y - lastMouse.y;
+    });
+
+    window.addEventListener('mousedown', (e) => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      // Boom is kept exactly the same!
+      const numParticles = Math.floor(Math.random() * 15) + 20; 
+      
+      for (let i = 0; i < numParticles; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const speed = Math.random() * 6 + 2; 
+        boomParticles.push({
+          x: e.clientX,
+          y: e.clientY,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed,
+          size: Math.random() * 4 + 1,
+          life: 1.0,
+          color: isDark ? `rgba(0, 255, 255,` : `rgba(211, 84, 0,` 
+        });
+      }
+    });
+
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+
+      // --- 1. SPAWN NEW COMET FIRE PARTICLES (SUBDUED) ---
+      if (mouse.x > 0 && mouse.y > 0) {
+        // Reduced to 2 particles per frame (thinner trail)
+        for(let i = 0; i < 2; i++) {
+          trailParticles.push({
+            // Tighter scatter radius (was 10, now 5)
+            x: mouse.x + (Math.random() - 0.5) * 5, 
+            y: mouse.y + (Math.random() - 0.5) * 5,
+            vx: (mouse.vx * -0.1) + (Math.random() - 0.5) * 1.5,
+            vy: (mouse.vy * -0.1) + (Math.random() - 0.5) * 1.5,
+            // Much smaller particle size (was 4-12, now 1.5-5.5)
+            size: Math.random() * 4 + 1.5, 
+            life: 1.0,
+            // Burns out slightly faster so the tail isn't too long
+            decay: Math.random() * 0.04 + 0.03 
+          });
+        }
+      }
+
+      // --- 2. DRAW COMET TAIL ---
+      for (let i = trailParticles.length - 1; i >= 0; i--) {
+        let p = trailParticles[i];
+        
+        p.x += p.vx;
+        p.y += p.vy;
+        p.life -= p.decay;
+        p.size *= 0.95; 
+        
+        if (p.life <= 0 || p.size < 0.5) {
+          trailParticles.splice(i, 1);
+        } else {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          
+          if (isDark) {
+            const r = Math.floor(p.life * 255);
+            const g = Math.floor(p.life * 255 + (1-p.life)*255);
+            const b = 255;
+            ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${p.life})`;
+          } else {
+            const r = 255;
+            const g = Math.floor(p.life * 255);
+            const b = Math.floor((p.life - 0.5) * 510);
+            ctx.fillStyle = `rgba(${r}, ${Math.max(0, g)}, ${Math.max(0, b)}, ${p.life})`;
+          }
+          ctx.fill();
+        }
+      }
+
+      // Draw the "Meteor Rock" Core (Shrunk down)
+      if (mouse.x > 0 && mouse.y > 0) {
+        ctx.beginPath();
+        // Radius shrunk from 4 to 2 for a finer point
+        ctx.arc(mouse.x, mouse.y, 2, 0, Math.PI * 2); 
+        ctx.fillStyle = isDark ? '#ffffff' : '#333333';
+        ctx.fill();
+      }
+
+      // --- 3. DRAW BOOM PARTICLES ---
+      for (let i = boomParticles.length - 1; i >= 0; i--) {
+        let p = boomParticles[i];
+        p.x += p.vx;
+        p.y += p.vy;
+        p.life -= 0.02; 
+        
+        if (p.life <= 0) {
+          boomParticles.splice(i, 1);
+        } else {
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fillStyle = p.color + `${p.life})`;
+          ctx.fill();
+        }
+      }
+
+      mouse.vx *= 0.8;
+      mouse.vy *= 0.8;
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+  </script>
 </body>
 </html>

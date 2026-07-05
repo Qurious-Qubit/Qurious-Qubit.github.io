@@ -1,3 +1,14 @@
+/* --- GLOBAL CURSOR CANVAS --- */
+#cursor-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none; /* Let's you click through the canvas to your links */
+  z-index: 9999; /* Keeps the effect on top of all other elements */
+}
+
 /* --- THEME VARIABLES --- */
 :root {
   /* Concept B: Electromagnetic Field (Light Mode) */
