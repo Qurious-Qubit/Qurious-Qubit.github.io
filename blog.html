@@ -11,19 +11,31 @@ title: Blog - Qurious-Qubit
       <button class="filter-btn" data-filter="debate">Debates</button>
       <button class="filter-btn" data-filter="session">Sessions</button>
     </div>
+    
     <div class="blog-posts" id="blog-posts-container">
+      {% assign ordered_posts = site.posts | sort: 'order' | reverse %}
+      {% for post in ordered_posts %}
+      <div class="post-preview" data-category="{{ post.category }}">
+        <img src="{{ post.thumbnail | relative_url }}" alt="{{ post.title }} Thumbnail">
+        <div class="post-content">
+          <h3>{{ post.title }}</h3>
+          <p>{{ post.excerpt | strip_html | truncatewords: 30 }}</p>
+          <a href="{{ post.url | relative_url }}">Read More</a>
+        </div>
       </div>
+      {% endfor %}
+    </div>
   </section>
 
-<div class="scrollable-archive" style="margin-top: 3rem;">
+  <div class="scrollable-archive" style="margin-top: 3rem;">
     <div style="margin-bottom: 0.5rem; font-weight: 500; color: var(--text-color);">
       <small>ALL POSTS</small>
     </div>
     <div style="overflow-x: auto; overflow-y: hidden; white-space: nowrap; padding: 1rem 0; -webkit-overflow-scrolling: touch; scrollbar-width: thin;">
       <div style="display: inline-flex; gap: 1.5rem; padding: 0 0.5rem;">
         
-        {% for post in site.data.meta %}
-        <a href="{{ '/blog-posts/' | append: post.folder | append: '/post.html' | relative_url }}" style="display: inline-block; padding: 0.75rem 1.25rem; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; color: var(--accent-2); text-decoration: none; white-space: nowrap; font-size: 0.9em; transition: all 0.2s ease;">
+        {% for post in site.posts %}
+        <a href="{{ post.url | relative_url }}" style="display: inline-block; padding: 0.75rem 1.25rem; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; color: var(--accent-2); text-decoration: none; white-space: nowrap; font-size: 0.9em; transition: all 0.2s ease;">
           {{ post.title }}
         </a>
         {% endfor %}
@@ -36,59 +48,33 @@ title: Blog - Qurious-Qubit
   </div>
 
   <script>
-    // -- FETCH LOGIC (Fixed Paths) --
-    fetch('{{ "/blog-posts/meta.json" | relative_url }}')
-      .then(response => response.json())
-      .then(posts => {
-        const container = document.getElementById('blog-posts-container');
-
-        posts.forEach(post => {
-          const postDiv = document.createElement('div');
-          postDiv.className = 'post-preview';
-          
-          const thumbnailPath = `{{ "/blog-posts/" | relative_url }}${post.thumbnail}`;
-          const postHtmlPath = `{{ "/blog-posts/" | relative_url }}${post.folder}/post.html`;
-
-          postDiv.innerHTML = `
-            <img src="${thumbnailPath}" alt="${post.title} Thumbnail">
-            <div class="post-content">
-              <h3>${post.title}</h3>
-              <p>${post.summary}</p>
-              <a href="${postHtmlPath}">Read More</a>
-            </div>
-          `;
-          postDiv.setAttribute('data-category', post.category);
-          container.appendChild(postDiv);
-        });
-
-        function filterPosts(category) {
-          const posts = document.querySelectorAll('.post-preview');
-          posts.forEach(post => {
-            if (category === 'all' || post.getAttribute('data-category') === category) {
-              post.style.display = 'flex';
-            } else {
-              post.style.display = 'none';
-            }
-          });
+    // -- FAST FRONT-END FILTERING --
+    function filterPosts(category) {
+      const posts = document.querySelectorAll('.post-preview');
+      posts.forEach(post => {
+        if (category === 'all' || post.getAttribute('data-category') === category) {
+          post.style.display = 'flex';
+        } else {
+          post.style.display = 'none';
         }
+      });
+    }
 
-        document.querySelectorAll('.filter-btn').forEach(button => {
-          button.addEventListener('click', () => {
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-            filterPosts(button.getAttribute('data-filter'));
-          });
-        });
+    document.querySelectorAll('.filter-btn').forEach(button => {
+      button.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        button.classList.add('active');
+        filterPosts(button.getAttribute('data-filter'));
+      });
+    });
 
-        const urlParams = new URLSearchParams(window.location.search);
-        const filterFromUrl = urlParams.get('filter');
-        if (filterFromUrl) {
-            const targetButton = document.querySelector(`[data-filter="${filterFromUrl}"]`);
-            if (targetButton) {
-                targetButton.click();
-            }
+    const urlParams = new URLSearchParams(window.location.search);
+    const filterFromUrl = urlParams.get('filter');
+    if (filterFromUrl) {
+        const targetButton = document.querySelector(`[data-filter="${filterFromUrl}"]`);
+        if (targetButton) {
+            targetButton.click();
         }
-      })
-      .catch(error => console.error('Error loading blog previews:', error));
+    }
   </script>
 </div>

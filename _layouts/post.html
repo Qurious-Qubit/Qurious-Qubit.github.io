@@ -1,0 +1,85 @@
+---
+layout: default
+---
+<!-- The layout: default at the top tells Jekyll to automatically wrap this inside your Navbar and Footer! -->
+
+<div class="main-content">
+  <section>
+    <table class="post-layout">
+      
+      <!-- TITLE ROW -->
+      <tr>
+        <td class="post-title" colspan="2">
+          <h1>{{ page.title }}</h1>
+          <div class="post-category" style="display: none;">{{ page.category }}</div>
+        </td>
+      </tr>
+
+      <!-- CONTENT & IMAGES ROW -->
+      <tr>
+        <td class="post-content-text">
+          <!-- This tag injects all your Markdown text here -->
+          {{ content }}
+        </td>
+
+        <td class="post-content-image">
+          <!-- This automatically loops through your images without needing images.json or JavaScript! -->
+          {% for img in page.images %}
+            <img src="{{ img }}" alt="Post Image" class="post-image">
+          {% endfor %}
+        </td>
+      </tr>
+
+      <!-- RESOURCES ROW (Only shows if you add resources) -->
+      {% if page.resources %}
+      <tr>
+        <td class="post-content-resources" colspan="2">
+          <h3>Resources:</h3>
+          <ul>
+            {% for res in page.resources %}
+            <li><a href="{{ res.link }}" target="_blank">{{ res.name }}</a></li>
+            {% endfor %}
+          </ul>
+        </td>
+      </tr>
+      {% endif %}
+
+      <!-- REFERENCES ROW (Only shows if you add references) -->
+      {% if page.references %}
+      <tr>
+        <td class="post-content-references" colspan="2">
+          <h3>References:</h3>
+          <ul class="small-text">
+            {% for ref in page.references %}
+            <li><a href="{{ ref.link }}" target="_blank">{{ ref.name }}</a></li>
+            {% endfor %}
+          </ul>
+        </td>
+      </tr>
+      {% endif %}
+
+    </table>
+  </section>
+</div>
+
+<!-- KaTeX Math Rendering Script -->
+<script src="https://cdn.jsdelivr.net/npm/katex@0.15.0/dist/katex.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.0/dist/katex.min.css">
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const mathElements = document.querySelectorAll('.post-content-text');
+    mathElements.forEach(element => {
+      const inlineMathRegex = /\$([^$]+)\$/g;
+      element.innerHTML = element.innerHTML.replace(inlineMathRegex, (match, math) => {
+        try { return katex.renderToString(math, { throwOnError: false }); } 
+        catch (e) { return match; }
+      });
+      
+      const displayMathRegex = /\$\$([^$]+)\$\$/g;
+      element.innerHTML = element.innerHTML.replace(displayMathRegex, (match, math) => {
+        try { return katex.renderToString(math, { throwOnError: false, displayMode: true }); } 
+        catch (e) { return match; }
+      });
+    });
+  });
+</script>

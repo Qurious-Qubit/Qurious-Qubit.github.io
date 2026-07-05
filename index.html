@@ -41,15 +41,27 @@ title: Qurious-Qubit
 
   <section class="recent-posts-1">
     <h2>Recent Posts</h2>
-    <div class="posts-grid-1" id="recent-posts-container">
+    <div class="posts-grid-1">
+      {% for post in site.posts limit:3 %}
+      <div class="post-card-1">
+        <div class="post-image-1">
+          <img src="{{ post.thumbnail | relative_url }}" alt="{{ post.title }}">
+        </div>
+        <div class="post-content-1">
+          <h3>{{ post.title }}</h3>
+          <p>{{ post.excerpt | strip_html | truncatewords: 20 }}</p>
+          <a href="{{ post.url | relative_url }}" class="read-more-1">Read More →</a>
+        </div>
       </div>
+      {% endfor %}
+    </div>
   </section>
 </div>
 
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
 <script>
-  // -- PARTICLE LOGIC --
+  // -- PARTICLE LOGIC (Kept exactly as you like it) --
   function initParticles(theme) {
     if (window.pJSDom && window.pJSDom.length > 0) {
         window.pJSDom[0].pJS.fn.vendors.destroypJS();
@@ -91,38 +103,7 @@ title: Qurious-Qubit
     initParticles(document.documentElement.getAttribute('data-theme') || 'light');
   });
 
-  // Listen for the toggle switch from default.html
   window.addEventListener('themeChanged', (e) => {
     initParticles(e.detail.theme);
   });
-
-  // -- FETCH LOGIC (Fixed Paths) --
-  fetch('{{ "/blog-posts/meta.json" | relative_url }}')
-    .then(response => response.json())
-    .then(posts => {
-      const container = document.getElementById('recent-posts-container');
-      const recentPosts = posts.slice(0, 3);
-      
-      recentPosts.forEach(post => {
-        const postCard = document.createElement('div');
-        postCard.className = 'post-card-1';
-        
-        // Dynamically build correct Jekyll paths
-        const thumbnailPath = `{{ "/blog-posts/" | relative_url }}${post.thumbnail}`;
-        const postHtmlPath = `{{ "/blog-posts/" | relative_url }}${post.folder}/post.html`;
-        
-        postCard.innerHTML = `
-          <div class="post-image-1">
-            <img src="${thumbnailPath}" alt="${post.title}">
-          </div>
-          <div class="post-content-1">
-            <h3>${post.title}</h3>
-            <p>${post.summary}</p>
-            <a href="${postHtmlPath}" class="read-more-1">Read More →</a>
-          </div>
-        `;
-        container.appendChild(postCard);
-      });
-    })
-    .catch(error => console.error('Error loading recent posts:', error));
 </script>
