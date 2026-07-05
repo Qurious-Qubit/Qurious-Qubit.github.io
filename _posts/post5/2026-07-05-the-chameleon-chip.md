@@ -3,7 +3,7 @@ layout: post
 title: "The Chameleon Chip: How FPGAs Adapt to Power Innovation"
 description: "Discover how Field-Programmable Gate Arrays (FPGAs) work - from SRAM vs Flash types to Logic Blocks and LUTs. Learn how these reconfigurable chips power everything from data centers to medical devices."
 category: explore
-order: 05
+order: 5
 thumbnail: /images/posts/post5/image1.jpg
 images:
   - /images/posts/post5/image1.jpg

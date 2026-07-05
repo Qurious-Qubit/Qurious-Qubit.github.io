@@ -3,7 +3,7 @@ layout: post
 title: "The Unseen Clockmaker: How Digital Circuits Harness the Power of Delay"
 description: "Discover why propagation delays aren't bugs but essential features that make digital computation possible. Learn how clocks synchronize chaos to create memory and sequential logic."
 category: explore
-order: 08
+order: 8
 thumbnail: /images/posts/post8/image1.png
 images:
   - /images/posts/post8/image1.png

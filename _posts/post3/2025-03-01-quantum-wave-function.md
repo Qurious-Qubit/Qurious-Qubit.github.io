@@ -3,7 +3,7 @@ layout: post
 title: "The Ghost in the Machine: Unveiling the Quantum Wave Function"
 description: "Explore the mysterious quantum wave function - from superposition and wave function collapse to the Schrödinger Equation. Learn how this fundamental concept powers modern technology."
 category: explore
-order: 03
+order: 3
 thumbnail: /images/posts/post3/image1.png
 images:
   - /images/posts/post3/image1.png

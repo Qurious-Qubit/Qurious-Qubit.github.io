@@ -2,7 +2,7 @@
 layout: post
 title: "Beyond the Numbers: Why Math Matters and is Actually Beautiful!"
 description: "Deals with the beauty of mathematics and its importance. How gracefully it appears in nature and how it is the backbone of modern technology."
-order: 01
+order: 1
 category: explore
 thumbnail: /images/posts/post1/image1.jpg
 images:

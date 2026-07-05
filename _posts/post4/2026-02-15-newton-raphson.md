@@ -3,7 +3,7 @@ layout: post
 title: "Newton-Raphson Method: Finding Roots with Tangents"
 description: "Learn how the Newton-Raphson method uses tangent lines to quickly find function roots. Step-by-step derivation, formula explanation , and practical example for calculating square roots."
 category: explore
-order: 04
+order: 4
 thumbnail: /images/posts/post4/image1.png
 images:
   - /images/posts/post4/image1.png
