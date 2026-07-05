@@ -62,24 +62,30 @@ layout: default
   </section>
 </div>
 
-<!-- KaTeX Math Rendering Script -->
-<script src="https://cdn.jsdelivr.net/npm/katex@0.15.0/dist/katex.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.0/dist/katex.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-    const mathElements = document.querySelectorAll('.post-content-text');
-    mathElements.forEach(element => {
-      const inlineMathRegex = /\$([^$]+)\$/g;
-      element.innerHTML = element.innerHTML.replace(inlineMathRegex, (match, math) => {
-        try { return katex.renderToString(math, { throwOnError: false }); } 
-        catch (e) { return match; }
+    // This targets your specific markdown content area
+    const contentArea = document.querySelector('.post-content-text');
+    
+    if (contentArea) {
+      renderMathInElement(contentArea, {
+        delimiters: [
+          // Catches raw Markdown display math
+          {left: '$$', right: '$$', display: true},
+          // Catches Kramdown's converted display math
+          {left: '\\[', right: '\\]', display: true},
+          // Catches raw Markdown inline math
+          {left: '$', right: '$', display: false},
+          // Catches Kramdown's converted inline math
+          {left: '\\(', right: '\\)', display: false}
+        ],
+        throwOnError: false, // Prevents a single typo from breaking the whole page
+        output: 'html' // Ensures clean, selectable math text
       });
-      
-      const displayMathRegex = /\$\$([^$]+)\$\$/g;
-      element.innerHTML = element.innerHTML.replace(displayMathRegex, (match, math) => {
-        try { return katex.renderToString(math, { throwOnError: false, displayMode: true }); } 
-        catch (e) { return match; }
-      });
-    });
+    }
   });
 </script>
