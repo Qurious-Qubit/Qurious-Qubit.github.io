@@ -17,6 +17,7 @@
   <div class="navbar">
     <a href="{{ '/' | relative_url }}">About</a>
     <a href="{{ '/blog.html' | relative_url }}">Blog</a>
+    <a href="{{ '/qronicle.html' | relative_url }}">Qronicle</a>
     <a href="{{ '/team.html' | relative_url }}">Team</a>
     <a href="{{ '/contact.html' | relative_url }}">Contact</a>
     <button id="theme-toggle">🌓 Toggle Theme</button>
@@ -43,7 +44,7 @@
       root.setAttribute('data-theme', newTheme);
       localStorage.setItem('theme', newTheme);
       
-      // Tell the rest of the site (specifically index.html) that the theme changed
+      // Tell the rest of the site that the theme changed
       window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme: newTheme } }));
     });
   </script>
@@ -78,7 +79,6 @@
 
     window.addEventListener('mousedown', (e) => {
       const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      // Boom is kept exactly the same!
       const numParticles = Math.floor(Math.random() * 15) + 20; 
       
       for (let i = 0; i < numParticles; i++) {
@@ -100,26 +100,20 @@
       ctx.clearRect(0, 0, width, height);
       const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
 
-      // --- 1. SPAWN NEW COMET FIRE PARTICLES (SUBDUED) ---
       if (mouse.x > 0 && mouse.y > 0) {
-        // Reduced to 2 particles per frame (thinner trail)
         for(let i = 0; i < 2; i++) {
           trailParticles.push({
-            // Tighter scatter radius (was 10, now 5)
             x: mouse.x + (Math.random() - 0.5) * 5, 
             y: mouse.y + (Math.random() - 0.5) * 5,
             vx: (mouse.vx * -0.1) + (Math.random() - 0.5) * 1.5,
             vy: (mouse.vy * -0.1) + (Math.random() - 0.5) * 1.5,
-            // Much smaller particle size (was 4-12, now 1.5-5.5)
             size: Math.random() * 4 + 1.5, 
             life: 1.0,
-            // Burns out slightly faster so the tail isn't too long
             decay: Math.random() * 0.04 + 0.03 
           });
         }
       }
 
-      // --- 2. DRAW COMET TAIL ---
       for (let i = trailParticles.length - 1; i >= 0; i--) {
         let p = trailParticles[i];
         
@@ -149,16 +143,13 @@
         }
       }
 
-      // Draw the "Meteor Rock" Core (Shrunk down)
       if (mouse.x > 0 && mouse.y > 0) {
         ctx.beginPath();
-        // Radius shrunk from 4 to 2 for a finer point
         ctx.arc(mouse.x, mouse.y, 2, 0, Math.PI * 2); 
         ctx.fillStyle = isDark ? '#ffffff' : '#333333';
         ctx.fill();
       }
 
-      // --- 3. DRAW BOOM PARTICLES ---
       for (let i = boomParticles.length - 1; i >= 0; i--) {
         let p = boomParticles[i];
         p.x += p.vx;
@@ -177,10 +168,8 @@
 
       mouse.vx *= 0.8;
       mouse.vy *= 0.8;
-
       requestAnimationFrame(animate);
     }
-
     animate();
   </script>
 </body>

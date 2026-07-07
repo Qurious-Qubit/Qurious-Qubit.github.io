@@ -1,2 +1,7 @@
 url: "https://qurious-qubit.github.io"
 baseurl: ""
+
+collections:
+  qronicle:
+    output: true
+    permalink: /qronicle/:name/
