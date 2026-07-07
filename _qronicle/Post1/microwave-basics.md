@@ -4,10 +4,9 @@ title: "From EMag to Entanglement: Why Microwave Engineering is the Key to Quant
 description: "Bridging the gap between classical electrical engineering and the quantum frontier. Discover why manipulating qubits requires mastering the invisible world of high frequencies."
 order: 1
 topic: [Basics]
-thumbnail: /images/qronicle/Post1/image1.webp
 images:
-  - /images/qronicle/Post1/image1.webp
-  - /images/qronicle/Post1/image2.jpg
+  - /images/qronicle/post1/image1.webp
+  - /images/qronicle/post1/image2.jpg
   
 resources:
   - name: "A cryogenic on-chip microwave pulse generator for large-scale superconducting quantum computing"
