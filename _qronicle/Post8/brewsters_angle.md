@@ -5,7 +5,7 @@ description: "Is it possible to transmit a signal with absolutely zero reflectio
 order: 8
 images:
   - /images/qronicle/post8/image1.webp
-topic: [Electromagnetics, Derivations, Basics]
+topic: [Theory, EM-Theory, L1-Foundational, Derivation]
 ---
 
 ## Can We Have Zero Reflection?

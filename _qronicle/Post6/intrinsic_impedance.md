@@ -3,7 +3,7 @@ layout: post
 title: "The 377 Ohm Universe: Impedance Matching and Quantum Signal Integrity"
 description: "Why do microwave pulses reflect? Understanding intrinsic impedance, the constant of free space, and the engineering art of perfect power transfer."
 order: 6
-topic: [Electromagnetics, Quantum Control, Hardware]
+topic: [Theory, EM-Theory, L1-Foundational, Derivation]
 ---
 
 ## What Actually is Impedance?

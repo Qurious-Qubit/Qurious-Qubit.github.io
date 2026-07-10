@@ -3,7 +3,7 @@ layout: post
 title: "From Maxwell to Helmholtz: Deriving the Electromagnetic Wave"
 description: "We established Maxwell's equations. Now, let's derive the wave equations that allow microwave control pulses to propagate through space and transmission lines."
 order: 3
-topic: [Basics, Derivations, Theory]
+topic: [Theory, EM-Theory, L1-Foundational, Derivation]
 images:
   - /images/qronicle/post3/image1.jpg
   - /images/qronicle/post3/image2.gif

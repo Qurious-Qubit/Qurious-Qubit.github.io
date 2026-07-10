@@ -3,7 +3,7 @@ layout: post
 title: "The Classical Foundation: Maxwell's Equations for Quantum Control"
 description: "Before manipulating quantum states, you must master the classical waves that control them. A dive into the fundamental differential laws of electromagnetism."
 order: 2
-topic: [Basics, Electromagnetics]
+topic: [Theory, EM-Theory, L1-Foundational]
 images:
   - /images/qronicle/post2/image1.jpg
   - /images/qronicle/post2/image2.jpg

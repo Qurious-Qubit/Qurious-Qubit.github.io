@@ -3,7 +3,6 @@ layout: post
 title: "From EMag to Entanglement: Why Microwave Engineering is the Key to Quantum Control"
 description: "Bridging the gap between classical electrical engineering and the quantum frontier. Discover why manipulating qubits requires mastering the invisible world of high frequencies."
 order: 1
-topic: [Basics]
 images:
   - /images/qronicle/post1/image1.webp
   - /images/qronicle/post1/image2.jpg
