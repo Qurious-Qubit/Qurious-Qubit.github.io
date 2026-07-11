@@ -1,0 +1,62 @@
+<div style="text-align: center; margin: 30px 0; padding: 20px; background: #1e1e1e; border-radius: 8px; color: white;">
+  <canvas id="ropeCanvas" width="600" height="200" style="background: #2d2d2d; border-radius: 4px; max-width: 100%;"></canvas>
+  <br><br>
+  <label for="freqSlider" style="font-family: sans-serif; font-size: 16px;">Oscillation Frequency:</label><br>
+  <input type="range" id="freqSlider" min="0.1" max="5" step="0.1" value="0.5" style="width: 80%; max-width: 400px; margin-top: 10px;">
+  <p id="freqLabel" style="font-family: sans-serif; font-weight: bold; margin-top: 15px; font-size: 18px; color: #f39c12;">
+    Low Frequency: Lumped Circuit Behavior
+  </p>
+</div>
+
+<script>
+  const canvas = document.getElementById('ropeCanvas');
+  const ctx = canvas.getContext('2d');
+  const slider = document.getElementById('freqSlider');
+  const label = document.getElementById('freqLabel');
+  
+  let time = 0;
+  
+  function draw() {
+    requestAnimationFrame(draw);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    let freq = parseFloat(slider.value);
+    time += 0.02 * freq; 
+    
+    if (freq < 1.5) {
+        label.innerText = "Low Frequency: Lumped Circuit Behavior (Uniform movement)";
+        label.style.color = "#f39c12"; // Orange
+    } else {
+        label.innerText = "High Frequency: Distributed Wave Behavior (Traveling wave)";
+        label.style.color = "#2ecc71"; // Green
+    }
+    
+    ctx.beginPath();
+    ctx.moveTo(0, canvas.height / 2);
+    
+    for (let x = 0; x <= canvas.width; x++) {
+        let waveLength = 1000 / freq; 
+        let k = (Math.PI * 2) / waveLength;
+        let damping = (canvas.width - x) / canvas.width; // Fixes the rope to the wall
+        
+        let y = (canvas.height / 2) + Math.sin(k * x - time * 5) * 50 * damping;
+        ctx.lineTo(x, y);
+    }
+    
+    ctx.strokeStyle = "#d4a373"; // Rope color
+    ctx.lineWidth = 5;
+    ctx.stroke();
+    
+    // Draw Hand 
+    ctx.fillStyle = "#ffbfa0";
+    let handY = (canvas.height / 2) + Math.sin(-time * 5) * 50;
+    ctx.beginPath();
+    ctx.arc(10, handY, 15, 0, Math.PI * 2);
+    ctx.fill();
+    
+    // Draw Wall 
+    ctx.fillStyle = "#888";
+    ctx.fillRect(canvas.width - 15, 0, 15, canvas.height);
+  }
+  draw();
+</script>
