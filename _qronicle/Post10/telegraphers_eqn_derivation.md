@@ -89,7 +89,7 @@ These are the famous **Telegrapher's Equations**.
 
 So, if we observe this carefully, we can notice that the spatial derivative (change in distance) is directly equal to a differential equation in time. These two equations give the complete relationship between the time and space variations of current and voltage across the transmission line.
 
-Does this look familiar? It should! This is very similar to the EM wave derivation we did earlier in our [Helmholtz Equations post](https://qurious-qubit.github.io/qronicle/helmholtz-equations/). In Maxwell's equations, a changing electric field in time creates a changing magnetic field in space, and vice versa. Here in our transmission line, a changing voltage in time creates a changing current in space. 
+Does this look familiar? It should! This is very similar to the EM wave derivation we did earlier in our [Helmholtz Equations post](https://qurious-qubit.github.io/qronicle/post-3/). In Maxwell's equations, a changing electric field in time creates a changing magnetic field in space, and vice versa. Here in our transmission line, a changing voltage in time creates a changing current in space. 
 
 By simply breaking a wire down into tiny $R, L, G, C$ components, we have mathematically proven that the electrical signal behaves exactly like a traveling wave!
 

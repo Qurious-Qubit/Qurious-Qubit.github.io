@@ -1,96 +1,118 @@
 ---
 layout: post
-title: "The Math of the Rope: Deriving the Telegrapher's Equations"
-description: "How do we mathematically prove that a wire acts like a wave? A simple, step-by-step derivation of the Telegrapher's equations using basic circuit theory."
+title: "Uncoupling the Waves: Deriving the Exact Wave Equation for Voltage and Current"
+description: "How do we solve equations that depend on each other? A simple mathematical trick to decouple the Telegrapher's equations and reveal the hidden wave."
 order: 11
 slug: "11"
 topic: [Theory, Derivation, Microwave-Engg, L2-Intermediate]
 images:
-  - /images/qronicle/post10/image1.jpg
-  - /images/qronicle/post10/image2.webp
-  - /images/qronicle/post10/image3.png
-resources:
-  - name: "Solution to Telegrapher's Equation (ResearchGate)"
-    link: "https://www.researchgate.net/profile/Smrity-Dwivedi/post/Solution_to_Telegraphers_Equation/attachment/5b728688cfe4a7f7ca5a29bb/AS%3A659431792578569%401534232199959/download/ma1.pdf"
-  - name: "Telegrapher's Equation (GeeksforGeeks)"
-    link: "https://www.geeksforgeeks.org/electrical-engineering/telegraphers-equation/"
-references:
-  - name: "Transmission Lines - Telegrapher's Equations (YouTube)"
-    link: "https://www.youtube.com/watch?v=qFBr9xXloAc&list=PL2fRCJxWQiS8qheVohpFJSl1WF6lNNBWh&index=3"
+  - /images/qronicle/post11/image1.jpg
+  - /images/qronicle/post11/image2.jpg
 ---
 
-## Modeling the "Rope"
+## The Problem of Coupled Equations
 
-In our last post, we talked about how a high-frequency signal doesn't just instantly appear at the end of a wire. Because of the delays in the line, the energy actually travels like a wave on a rope. 
+In our previous post, we successfully derived the Telegrapher's Equations for a small section of a transmission line. We found two beautiful equations governing the voltage ($V$) and current ($I$):
 
-But how do we model this mathematically? We cannot use basic DC circuit rules for the whole cable at once. Instead, we have to take a very small section of the transmission line, with a tiny length of $dl$. 
-
-Even for a simple wire, if we zoom in close enough, we will notice every line has some resistance and inductance along the wire, and some capacitance and conductance leaking between the wires. So, we assume our tiny section of length $dl$ has:
-* A lumped inductor ($L$) and resistor ($R$) in series.
-* A capacitor ($C$) and a conductance/resistor ($G$) in shunt (parallel).
-
-*(Note: $R, L, G, C$ here are values per unit length, so for a section of length $dl$, their actual values are $R \cdot dl, L \cdot dl$, etc.) image on the right*
-
----
-
-## Deriving the Voltage Equation
-
-Let's assume the voltage entering this tiny section is $V_{in}$ and the voltage coming out is $V_o$. The current flowing through the line is $I$. 
-
-When the current passes through this small piece of wire, there will be a voltage drop across the series resistor and the series inductor. By applying basic Kirchhoff's Voltage Law (KVL), we can say:
-
-$$V_{in} - I \cdot R \cdot dl - L \cdot dl \frac{\partial I}{\partial t} = V_o$$
-
-Let's bring $V_o$ to the left side and set the equation to zero:
-
-$$V_{in} - V_o - I \cdot R \cdot dl - L \cdot dl \frac{\partial I}{\partial t} = 0$$
-
-Now, we just divide the entire equation by our tiny length, $dl$:
-
-$$\frac{V_{in} - V_o}{dl} - R I - L \frac{\partial I}{\partial t} = 0$$
-
-In calculus, the difference in voltage over a tiny distance $\frac{V_{in} - V_o}{dl}$ is simply the negative spatial derivative of the voltage, $-\frac{\partial V}{\partial z}$. So our final voltage equation becomes:
-
+Equation 1 (Voltage): 
 $$-\frac{\partial V}{\partial z} = R I + L \frac{\partial I}{\partial t}$$
 
----
-
-## Deriving the Current Equation
-
-Now, let's do the exact same thing for the current. The current entering the section is $I_{in}$ and the current coming out is $I_o$. But some current leaks away through the shunt conductance ($G$) and the shunt capacitor ($C$).
-
-By applying Kirchhoff's Current Law (KCL) at the node, we can write:
-
-$$I_{in} - V \cdot G \cdot dl - C \cdot dl \frac{\partial V}{\partial t} = I_o$$
-
-Bring $I_o$ to the left side:
-
-$$I_{in} - I_o - V \cdot G \cdot dl - C \cdot dl \frac{\partial V}{\partial t} = 0$$
-
-Again, divide the whole equation by $dl$:
-
-$$\frac{I_{in} - I_o}{dl} - G V - C \frac{\partial V}{\partial t} = 0$$
-
-Just like before, $\frac{I_{in} - I_o}{dl}$ is the negative spatial derivative of the current, $-\frac{\partial I}{\partial z}$. So our final current equation becomes:
-
+Equation 2 (Current): 
 $$-\frac{\partial I}{\partial z} = G V + C \frac{\partial V}{\partial t}$$
+
+If we compare this with our classical EM Wave equations, we observe a very clear similarity: the spatial derivative (change over distance) is dependent on time. But there is a big catch here! 
+
+The voltage's spatial derivative depends on the *current*, and the current's spatial derivative depends on the *voltage*. In mathematics, we call these **coupled differential equations**. Because they are tangled together, we cannot just solve them individually right away. We have to somehow uncouple them.
+
+Let's do a little mathematical magic to separate them. To make the derivation cleaner, let's move the negative sign to the other side and write time derivatives with a prime ($'$):
+
+$$\frac{\partial V}{\partial z} = -R I - L I'$$
+
+$$\frac{\partial I}{\partial z} = -G V - C V'$$
 
 ---
 
-## The Big Connection
+## Decoupling the Voltage Equation
 
-Let's look at the two final equations we just derived side-by-side:
+To solve for just Voltage ($V$), we need to completely eliminate Current ($I$) from the first equation. 
 
-$$-\frac{\partial V}{\partial z} = R I + L \frac{\partial I}{\partial t}$$
+First, let's differentiate Equation 1 with respect to distance ($z$):
 
-$$-\frac{\partial I}{\partial z} = G V + C \frac{\partial V}{\partial t}$$
+$$\frac{\partial^2 V}{\partial z^2} = -R \frac{\partial I}{\partial z} - L \frac{\partial^2 I}{\partial t \partial z}$$
 
-These are the famous **Telegrapher's Equations**. 
+Now, look at the terms on the right. We already know what $\frac{\partial I}{\partial z}$ is from Equation 2! But we also need the mixed derivative $\frac{\partial^2 I}{\partial t \partial z}$. To get that, we just differentiate Equation 2 with respect to time ($t$):
 
-So, if we observe this carefully, we can notice that the spatial derivative (change in distance) is directly equal to a differential equation in time. These two equations give the complete relationship between the time and space variations of current and voltage across the transmission line.
+$$\frac{\partial^2 I}{\partial t \partial z} = -G V' - C V''$$
 
-Does this look familiar? It should! This is very similar to the EM wave derivation we did earlier in our [Helmholtz Equations post](https://qurious-qubit.github.io/qronicle/post-3/). In Maxwell's equations, a changing electric field in time creates a changing magnetic field in space, and vice versa. Here in our transmission line, a changing voltage in time creates a changing current in space. 
+Now, we have everything we need. Let's substitute these two current expressions back into our new voltage equation:
 
-By simply breaking a wire down into tiny $R, L, G, C$ components, we have mathematically proven that the electrical signal behaves exactly like a traveling wave!
+$$\frac{\partial^2 V}{\partial z^2} = -R (-G V - C V') - L (-G V' - C V'')$$
 
-We will derive the excact wave equation in the following posts!!
+Multiply the terms out carefully:
+
+$$\frac{\partial^2 V}{\partial z^2} = R G V + R C V' + L G V' + L C V''$$
+
+Group the matching derivative terms together:
+
+$$\frac{\partial^2 V}{\partial z^2} = R G V + (R C + L G) V' + L C V''$$
+
+And there we have it! We have successfully derived a single equation that purely describes how the voltage behaves in space and time, with no current variable in sight.
+
+---
+
+## The Symmetry of Current
+
+What if we wanted to solve for Current instead? We would follow the exact same process in reverse. We would differentiate Equation 2 with respect to $z$, differentiate Equation 1 with respect to $t$, and substitute. 
+
+If we do the math:
+
+$$\frac{\partial^2 I}{\partial z^2} = -G (-R I - L I') - C (-R I' - L I'')$$
+
+$$\frac{\partial^2 I}{\partial z^2} = G R I + G L I' + C R I' + L C I''$$
+
+$$\frac{\partial^2 I}{\partial z^2} = G R I + (G L + C R) I' + L C I''$$
+
+If we observe closely, we notice something fantastic: **both $I$ and $V$ share the exact same differential equation!** Nature is beautifully symmetric.
+
+---
+
+## Moving to High Frequencies: The Phasor Solution
+
+Now, this equation looks a bit heavy with all those time derivatives ($V'$ and $V''$). But in microwave engineering, we are usually dealing with continuous AC signals oscillating at a specific frequency. 
+
+Let's assume our signal is a standard time-harmonic wave, which we write mathematically using Euler's formula as $I = I_0 \exp(j\omega t)$.
+
+When you take the time derivative of an exponential, the $j\omega$ simply comes down as a multiplier:
+* First derivative: $I' = j\omega I$
+* Second derivative: $I'' = (j\omega)(j\omega) I = -\omega^2 I$
+
+Let's substitute these into our current wave equation:
+
+$$\frac{\partial^2 I}{\partial z^2} = G R I + (G L + C R) (j\omega I) + L C (-\omega^2 I)$$
+
+Factor out the $I$:
+
+$$\frac{\partial^2 I}{\partial z^2} = (G R + j\omega G L + j\omega C R - \omega^2 L C) I$$
+
+We can group these terms nicely to make it easier to read:
+
+$$\frac{\partial^2 I}{\partial z^2} = [G(R + j\omega L) + j\omega C(R + j\omega L)] I$$
+
+Factor out $(R + j\omega L)$:
+
+$$\frac{\partial^2 I}{\partial z^2} = (R + j\omega L)(G + j\omega C) I$$
+
+To make our lives easier, engineers bundle that huge chunk of constants into a single term called the **Propagation Constant squared ($\gamma^2$)**:
+
+$$\gamma^2 = (R + j\omega L)(G + j\omega C)$$
+
+So our massive, complicated wave equation elegantly simplifies down to just:
+
+$$\frac{\partial^2 I}{\partial z^2} = \gamma^2 I$$
+$$\frac{\partial^2 V}{\partial z^2} = \gamma^2 V$$
+
+We have finally arrived at the standard second-order wave equation! 
+
+But what is the actual mathematical solution to this equation? Because this specific differential equation pattern appears everywhere in quantum mechanics and electromagnetics, we have created a dedicated post just for its generalized solution. 
+
+You can read the full, generalized derivation of how to solve this exact equation here: **[The Universal Wave Solution](https://qurious-qubit.github.io/blog/post-13/)**.
