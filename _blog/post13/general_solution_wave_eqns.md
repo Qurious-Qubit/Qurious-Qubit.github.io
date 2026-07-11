@@ -4,6 +4,7 @@ title: "The Universal Wave Solution: Solving the Second-Order Differential Equat
 description: "Why do we always assume exponential solutions for waves? A simple mathematical derivation showing how nature's fundamental equations are solved."
 category: explore
 order: 13
+slug: "13"
 thumbnail: /images/posts/post13/image1.jpg
 images:
   - /images/posts/post13/image1.jpg

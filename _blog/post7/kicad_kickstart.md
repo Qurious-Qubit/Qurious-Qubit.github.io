@@ -4,6 +4,7 @@ title: "KiCad Kickstart: A Hands-On Guide to Your First PCB"
 description: "Learn PCB design with the open-source KiCad software. Hands-on session covering schematic capture, PCB layout, and building an AC-to-DC power supply."
 category: session
 order: 7
+slug: "7"
 thumbnail: /images/posts/post7/image1.png
 images:
   - /images/posts/post7/image1.png

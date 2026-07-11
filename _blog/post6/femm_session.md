@@ -4,6 +4,7 @@ title: "Demystifying Electromagnetic Simulation: A Hands-On Session with FEMM"
 description: "Learn electromagnetic simulation with FEMM software. Hands-on session covering transformers, motors, actuators, and magnetic field analysis for engineers and students."
 category: session
 order: 6
+slug: "6"
 thumbnail: /images/posts/post6/image1.jpg
 images:
   - /images/posts/post6/image1.jpg

@@ -2,7 +2,8 @@
 layout: post
 title: "The Math of the Rope: Deriving the Telegrapher's Equations"
 description: "How do we mathematically prove that a wire acts like a wave? A simple, step-by-step derivation of the Telegrapher's equations using basic circuit theory."
-order: 10
+order: 11
+slug: "11"
 topic: [Theory, Derivation, Microwave-Engg, L2-Intermediate]
 images:
   - /images/qronicle/post10/image1.jpg

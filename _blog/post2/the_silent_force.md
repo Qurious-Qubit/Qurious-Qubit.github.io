@@ -4,6 +4,7 @@ title: "The Silent Force: How Electric Motors Power Everything"
 description: "Discover how electric motors silently power everything from household appliances to electric vehicles. Learn the science behind electromagnetic motion and real-world applications."
 category: explore
 order: 2
+slug: "2"
 thumbnail: /images/posts/post2/image1.png
 images:
   - /images/posts/post2/image1.png

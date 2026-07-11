@@ -4,6 +4,7 @@ title: "The Impulse Response Paradox: Why Time-Varying Output Doesn't Mean a Tim
 description: "Discover why a system's impulse response varies with time while the system itself remains time-invariant. A deep dive into the subtle art of signals and systems."
 category: explore
 order: 9
+slug: "9"
 thumbnail: /images/posts/post9/image1.png
 images:
   - /images/posts/post9/image1.png

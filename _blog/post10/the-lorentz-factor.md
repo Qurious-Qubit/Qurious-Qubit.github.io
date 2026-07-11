@@ -4,6 +4,7 @@ title: "The Lorentz Factor (γ): Einstein's Multiplier of Spacetime"
 description: "A deep dive into the Lorentz Factor (γ), the mathematical key that unlocks time dilation, length contraction, and relativistic mass/energy in Special Relativity."
 category: explore
 order: 10
+slug: "10"
 thumbnail: /images/posts/post10/image1.png
 images:
   - /images/posts/post10/image1.png

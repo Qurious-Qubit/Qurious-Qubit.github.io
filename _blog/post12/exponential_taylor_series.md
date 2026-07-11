@@ -4,6 +4,7 @@ title: "The Function That Is Its Own Derivative: How Taylor Series Reveals Natur
 description: "Discover how the exponential function emerges naturally from Taylor series as the unique solution to f'(x) = f(x), and why this makes it the fundamental building block of differential equations."
 category: explore
 order: 12
+slug: "12"
 thumbnail: /images/posts/post12/image1.jpg
 images:
   - /images/posts/post12/image1.jpg

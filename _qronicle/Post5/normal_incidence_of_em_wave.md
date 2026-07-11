@@ -3,6 +3,7 @@ layout: post
 title: "Reflection and Transmission of Uniform Plane Waves at Normal Incidence"
 description: "A step-by-step mathematical derivation of the reflection and transmission coefficients when an electromagnetic plane wave strikes a boundary between two different media."
 order: 5
+slug: "5"
 topic: [EM-Theory, L1-Foundational, Derivation]
 images:
   - /images/qronicle/post5/image1.png

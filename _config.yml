@@ -2,6 +2,9 @@ url: "https://qurious-qubit.github.io"
 baseurl: ""
 
 collections:
+  blog:
+    output: true
+    permalink: /blog/post-:slug/
   qronicle:
     output: true
-    permalink: /qronicle/:name/
+    permalink: /qronicle/post-:slug/

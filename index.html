@@ -47,8 +47,8 @@ title: Qurious-Qubit
   <section class="recent-posts-1">
     <h2>Recent Posts</h2>
     <div class="posts-grid-1">
-      {% assign posts_with_order = site.posts | where_exp: "post", "post.order != nil" %}
-      {% assign ordered_posts = posts_with_order | sort: 'order' | reverse %}
+      {% assign valid_posts = site.blog | where_exp: "post", "post.order != nil" %}
+      {% assign ordered_posts = valid_posts | sort: 'order' | reverse %}
       {% for post in ordered_posts limit:3 %}
       <div class="post-card-1">
         <div class="post-image-1">
@@ -68,7 +68,6 @@ title: Qurious-Qubit
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 
 <script>
-  // -- PARTICLE LOGIC (Kept exactly as you like it) --
   function initParticles(theme) {
     if (window.pJSDom && window.pJSDom.length > 0) {
         window.pJSDom[0].pJS.fn.vendors.destroypJS();

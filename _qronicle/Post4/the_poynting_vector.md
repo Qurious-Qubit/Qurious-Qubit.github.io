@@ -3,6 +3,7 @@ layout: post
 title: "The Poynting Vector: The Physics of Electromagnetic Power Flow"
 description: "How does an electromagnetic wave carry energy through an empty vacuum? A step-by-step physics derivation of power density and the Right-Hand Rule."
 order: 4
+slug: "4"
 topic: [EM-Theory, L1-Foundational, Derivation]
 images:
   - /images/qronicle/post4/image1.png

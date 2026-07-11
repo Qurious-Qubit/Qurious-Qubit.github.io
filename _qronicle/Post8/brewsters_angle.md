@@ -3,6 +3,7 @@ layout: post
 title: "The Magic Angle: Deriving Brewster's Angle for Zero Reflection"
 description: "Is it possible to transmit a signal with absolutely zero reflection? Let's do the math and derive the exact conditions for perfect transmission."
 order: 8
+slug: "8"
 images:
   - /images/qronicle/post8/image1.webp
 topic: [Theory, EM-Theory, L1-Foundational, Derivation]

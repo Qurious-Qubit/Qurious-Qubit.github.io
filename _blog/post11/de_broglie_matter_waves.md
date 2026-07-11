@@ -4,6 +4,7 @@ title: "De Broglie's Matter Waves: The Quantum Connection"
 description: "Exploring how Louis de Broglie's revolutionary hypothesis unified wave-particle duality and provided the missing explanation for Bohr's quantized orbits."
 category: explore
 order: 11
+slug: "11"
 thumbnail: /images/posts/post11/image1.png
 images:
   - /images/posts/post11/image1.png

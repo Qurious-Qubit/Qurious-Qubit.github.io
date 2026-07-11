@@ -3,6 +3,7 @@ layout: post
 title: "When Wires Become Waves: Why We Need Transmission Line Theory"
 description: "Before we can derive the math of high-frequency transmission, we have to unlearn what we know about basic circuits. Why don't voltages appear instantly?"
 order: 9
+slug: "9"
 topic: [Theory, Microwave-Engg, L2-Intermediate, Hardware]
 category: Theory
 field: Microwave-Engg

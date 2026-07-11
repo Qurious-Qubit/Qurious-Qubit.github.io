@@ -5,18 +5,27 @@ title: Blog - Qurious-Qubit
 <div class="main-content">
   <section id="blog" class="blog">
     <h2>Our Content Hub</h2>
+    
+    {% assign valid_posts = site.blog | where_exp: "post", "post.order != nil" | sort: 'order' | reverse %}
+    
+    {% assign all_categories = "" | split: "," %}
+    {% for post in valid_posts %}
+      {% if post.category %}
+        {% assign all_categories = all_categories | push: post.category %}
+      {% endif %}
+    {% endfor %}
+    {% assign unique_categories = all_categories | uniq | sort %}
+
     <div class="blog-filters">
       <button class="filter-btn active" data-filter="all">All Content</button>
-      <button class="filter-btn" data-filter="explore">Explore</button>
-      <button class="filter-btn" data-filter="debate">Debates</button>
-      <button class="filter-btn" data-filter="session">Sessions</button>
+      {% for cat in unique_categories %}
+        <button class="filter-btn" data-filter="{{ cat | downcase }}">{{ cat | capitalize }}</button>
+      {% endfor %}
     </div>
     
     <div class="blog-posts" id="blog-posts-container">
-      {% assign posts_with_order = site.posts | where_exp: "post", "post.order != nil" %}
-      {% assign ordered_posts = posts_with_order | sort: 'order' | reverse %}
-      {% for post in ordered_posts %}
-      <div class="post-preview" data-category="{{ post.category }}">
+      {% for post in valid_posts %}
+      <div class="post-preview" data-category="{{ post.category | downcase }}">
         <img src="{{ post.thumbnail | relative_url }}" alt="{{ post.title }} Thumbnail">
         <div class="post-content">
           <h3>{{ post.title }}</h3>
@@ -35,9 +44,7 @@ title: Blog - Qurious-Qubit
     <div style="overflow-x: auto; overflow-y: hidden; white-space: nowrap; padding: 1rem 0; -webkit-overflow-scrolling: touch; scrollbar-width: thin;">
       <div style="display: inline-flex; gap: 1.5rem; padding: 0 0.5rem;">
         
-      {% assign posts_with_order = site.posts | where_exp: "post", "post.order != nil" %}
-      {% assign ordered_posts = posts_with_order | sort: 'order' | reverse %}
-      {% for post in ordered_posts %}
+      {% for post in valid_posts %}
       <a href="{{ post.url | relative_url }}" style="display: inline-block; padding: 0.75rem 1.25rem; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 8px; color: var(--accent-2); text-decoration: none; white-space: nowrap; font-size: 0.9em; transition: all 0.2s ease;">
         {{ post.title }}
       </a>
@@ -71,6 +78,7 @@ title: Blog - Qurious-Qubit
       });
     });
 
+    // Check URL parameters for active filters when page loads
     const urlParams = new URLSearchParams(window.location.search);
     const filterFromUrl = urlParams.get('filter');
     if (filterFromUrl) {
