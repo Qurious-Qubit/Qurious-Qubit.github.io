@@ -5,6 +5,9 @@ description: "How do we solve equations that depend on each other? A simple math
 order: 11
 slug: "11"
 topic: [Theory, Derivation, Microwave-Engg, L2-Intermediate]
+references:
+  - name: "Wave Equation Solutions — Lesson 4"
+    link: "https://www.youtube.com/watch?v=0vaVfslHk04&list=PL2fRCJxWQiS8qheVohpFJSl1WF6lNNBWh&index=5"
 ---
 
 ## The Problem of Coupled Equations
