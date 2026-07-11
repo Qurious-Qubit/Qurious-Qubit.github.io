@@ -5,9 +5,6 @@ description: "How do we solve equations that depend on each other? A simple math
 order: 11
 slug: "11"
 topic: [Theory, Derivation, Microwave-Engg, L2-Intermediate]
-images:
-  - /images/qronicle/post11/image1.jpg
-  - /images/qronicle/post11/image2.jpg
 ---
 
 ## The Problem of Coupled Equations
@@ -106,13 +103,46 @@ To make our lives easier, engineers bundle that huge chunk of constants into a s
 
 $$\gamma^2 = (R + j\omega L)(G + j\omega C)$$
 
-So our massive, complicated wave equation elegantly simplifies down to just:
+So our massive, complicated wave equations elegantly simplify down to just:
 
-$$\frac{\partial^2 I}{\partial z^2} = \gamma^2 I$$
-$$\frac{\partial^2 V}{\partial z^2} = \gamma^2 V$$
+$$\frac{\partial^2 V}{\partial z^2} = \gamma^2 V \quad \text{and} \quad \frac{\partial^2 I}{\partial z^2} = \gamma^2 I$$
 
 We have finally arrived at the standard second-order wave equation! 
 
-But what is the actual mathematical solution to this equation? Because this specific differential equation pattern appears everywhere in quantum mechanics and electromagnetics, we have created a dedicated post just for its generalized solution. 
+---
 
-You can read the full, generalized derivation of how to solve this exact equation here: **[The Universal Wave Solution](https://qurious-qubit.github.io/blog/post-13/)**.
+## The Final Wave Solution
+
+Since both voltage and current follow the exact same second-order differential equation, they share the exact same mathematical solution. For any equation of this form, the solution is simply a combination of two exponential functions:
+
+$$V(z) = V_0^+ e^{-\gamma z} + V_0^- e^{+\gamma z}$$
+
+$$I(z) = I_0^+ e^{-\gamma z} + I_0^- e^{+\gamma z}$$
+
+What does this actually mean physically?
+* The first term ($e^{-\gamma z}$) represents the **forward-traveling wave**. This is the pristine microwave pulse you are sending down the cable from your signal generator to the quantum chip.
+* The second term ($e^{+\gamma z}$) represents the **backward-traveling wave**. This is the reflection bouncing back up the cable due to impedance mismatches!
+
+---
+
+## The Real World: The Lossless Line
+
+Now, let us talk practically. In quantum hardware, we use superconducting coaxial cables (like Niobium-Titanium) cooled inside a dilution refrigerator to millikelvin temperatures. Because they are superconducting, the resistance of the wire is basically zero ($R = 0$). Also, the dielectric insulators are so high-quality that there is almost zero leakage current ($G = 0$).
+
+This creates what we call a **Lossless Line**. Let's see what happens to our propagation constant ($\gamma$) under these perfect conditions:
+
+$$\gamma^2 = (0 + j\omega L)(0 + j\omega C)$$
+
+$$\gamma^2 = j^2 \omega^2 L C = -\omega^2 L C$$
+
+Taking the square root (and remembering that $j = \sqrt{-1}$):
+
+$$\gamma = j\omega\sqrt{LC}$$
+
+The propagation constant $\gamma$ is actually a complex number made of an attenuation constant ($\alpha$) and a phase constant ($\beta$), written as $\gamma = \alpha + j\beta$. 
+
+By comparing the terms, we can clearly see that for a lossless line, **$\alpha = 0$** and **$\beta = \omega\sqrt{LC}$**.
+
+This is a massive relief for quantum engineers! It mathematically proves that our microwave pulse will not lose any amplitude or energy ($\alpha = 0$) as it travels down into the fridge. It only experiences a predictable phase shift ($\beta$), which we can easily account for to execute perfect quantum logic gates.
+
+*(Note: Because this specific differential equation pattern appears everywhere in quantum mechanics and electromagnetics, we have created a dedicated mathematical post showing exactly how to derive this $e^{\gamma z}$ solution from scratch. You can read it here: [The Universal Wave Solution](https://qurious-qubit.github.io/blog/post-13/)).*
