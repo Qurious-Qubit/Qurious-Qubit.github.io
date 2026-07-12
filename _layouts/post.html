@@ -1,13 +1,10 @@
 ---
 layout: default
 ---
-<!-- The layout: default at the top tells Jekyll to automatically wrap this inside your Navbar and Footer! -->
-
 <div class="main-content">
   <section>
     <table class="post-layout">
       
-      <!-- TITLE ROW -->
       <tr>
         <td class="post-title" colspan="2">
           <h1>{{ page.title }}</h1>
@@ -15,22 +12,18 @@ layout: default
         </td>
       </tr>
 
-      <!-- CONTENT & IMAGES ROW -->
       <tr>
         <td class="post-content-text">
-          <!-- This tag injects all your Markdown text here -->
           {{ content }}
         </td>
 
         <td class="post-content-image">
-          <!-- This automatically loops through your images without needing images.json or JavaScript! -->
           {% for img in page.images %}
             <img src="{{ img }}" alt="Post Image" class="post-image">
           {% endfor %}
         </td>
       </tr>
 
-      <!-- RESOURCES ROW (Only shows if you add resources) -->
       {% if page.resources %}
       <tr>
         <td class="post-content-resources" colspan="2">
@@ -44,7 +37,6 @@ layout: default
       </tr>
       {% endif %}
 
-      <!-- REFERENCES ROW (Only shows if you add references) -->
       {% if page.references %}
       <tr>
         <td class="post-content-references" colspan="2">

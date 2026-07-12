@@ -1,0 +1,114 @@
+---
+layout: default
+title: Search Results
+---
+<div class="main-content">
+  <section class="blog">
+    <h2>Search Results</h2>
+    
+    <div style="background: var(--card-bg); padding: 20px; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 20px;">
+      <input type="text" id="main-search-input" style="width: 100%; padding: 10px; font-size: 1.1em; margin-bottom: 15px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--bg-color); color: var(--text-color);">
+      
+      <div style="display: flex; gap: 20px; flex-wrap: wrap; font-size: 0.9em;">
+        <label><input type="checkbox" id="exact-phrase"> Exact Phrase</label>
+      </div>
+    </div>
+
+    <p id="search-stats" style="color: var(--accent-1); font-weight: bold; margin-bottom: 10px;"></p>
+    
+    <ul id="search-results-list" style="list-style: none; padding: 0;"></ul>
+    
+    <div id="pagination-controls" style="display: flex; justify-content: space-between; margin-top: 20px;">
+      <button id="prev-page" style="padding: 8px 16px; background: var(--accent-2); color: white; border: none; border-radius: 4px; cursor: pointer; display: none;">← Previous 50</button>
+      <button id="next-page" style="padding: 8px 16px; background: var(--accent-2); color: white; border: none; border-radius: 4px; cursor: pointer; display: none; margin-left: auto;">Next 50 →</button>
+    </div>
+  </section>
+</div>
+
+<script>
+  let searchData = [];
+  let filteredResults = [];
+  let currentPage = 1;
+  const resultsPerPage = 50;
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const initialQuery = urlParams.get('q') || '';
+  
+  const searchInput = document.getElementById('main-search-input');
+  const exactPhraseChk = document.getElementById('exact-phrase');
+  const resultsList = document.getElementById('search-results-list');
+  const stats = document.getElementById('search-stats');
+  const prevBtn = document.getElementById('prev-page');
+  const nextBtn = document.getElementById('next-page');
+
+  searchInput.value = initialQuery;
+
+  // Fetch JSON once
+  fetch('{{ "/search.json" | relative_url }}')
+    .then(response => response.json())
+    .then(data => {
+      searchData = data;
+      executeSearch();
+    });
+
+  // Re-search when user types or clicks the exact phrase toggle
+  [searchInput, exactPhraseChk].forEach(el => {
+    el.addEventListener('input', () => { currentPage = 1; executeSearch(); });
+  });
+
+  prevBtn.addEventListener('click', () => { currentPage--; renderResults(); });
+  nextBtn.addEventListener('click', () => { currentPage++; renderResults(); });
+
+  function executeSearch() {
+    let query = searchInput.value.trim();
+    if (!query) {
+      filteredResults = [];
+      renderResults();
+      return;
+    }
+
+    const isExact = exactPhraseChk.checked;
+    
+    // Split into terms or keep as one exact phrase, then make case-insensitive
+    let terms = isExact ? [query] : query.split(/\s+/).filter(t => t.length > 0);
+    terms = terms.map(t => t.toLowerCase());
+
+    filteredResults = searchData.filter(doc => {
+      // Force everything to lowercase for easy matching
+      let content = (doc.title + " " + doc.content + " " + doc.category).toLowerCase();
+      
+      // Document must contain every term
+      return terms.every(term => content.includes(term));
+    });
+
+    renderResults();
+  }
+
+  function renderResults() {
+    resultsList.innerHTML = '';
+    const total = filteredResults.length;
+    stats.innerText = total > 0 ? `Found ${total} results` : 'No results found.';
+
+    const startIdx = (currentPage - 1) * resultsPerPage;
+    const endIdx = startIdx + resultsPerPage;
+    const pageResults = filteredResults.slice(startIdx, endIdx);
+
+    // Pass the query and Exact Phrase state to the destination URL
+    const q = encodeURIComponent(searchInput.value);
+    const params = `?q=${q}&ep=${exactPhraseChk.checked}`;
+
+    pageResults.forEach(doc => {
+      const li = document.createElement('li');
+      li.style.cssText = 'padding: 15px; border-bottom: 1px solid var(--border-color); margin-bottom: 10px; background: var(--card-bg); border-radius: 8px;';
+      
+      li.innerHTML = `<a href="${doc.url}${params}" style="color: var(--accent-2); text-decoration: none; font-size: 1.1em; font-weight: bold;">
+                        ${doc.title}
+                      </a>
+                      <br><small style="color: #888;">Category: ${doc.category}</small>`;
+      resultsList.appendChild(li);
+    });
+
+    prevBtn.style.display = currentPage > 1 ? 'block' : 'none';
+    nextBtn.style.display = endIdx < total ? 'block' : 'none';
+  }
+</script>

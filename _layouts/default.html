@@ -14,13 +14,18 @@
 </head>
 <body>
   <canvas id="cursor-canvas" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9999; display: block; margin: 0; padding: 0;"></canvas>
+  
   <div class="navbar">
     <a href="{{ '/' | relative_url }}">About</a>
     <a href="{{ '/blog.html' | relative_url }}">Blog</a>
     <a href="{{ '/qronicle.html' | relative_url }}">Qronicle</a>
     <a href="{{ '/team.html' | relative_url }}">Team</a>
     <a href="{{ '/contact.html' | relative_url }}">Contact</a>
-    <button id="theme-toggle">🌓 Toggle Theme</button>
+    
+    <div style="position: absolute; right: 20px; display: flex; align-items: center; gap: 15px;">
+      <button id="theme-toggle">🌓 Toggle Theme</button>
+      <input type="text" id="nav-search-input" placeholder="Search & press Enter..." style="padding: 5px 10px; border-radius: 15px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-color); width: 200px;">
+    </div>
   </div>
 
   {{ content }}
@@ -48,7 +53,9 @@
       window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme: newTheme } }));
     });
   </script>
+  
   <script>
+    /* --- CURSOR CANVAS ANIMATION --- */
     const canvas = document.getElementById('cursor-canvas');
     const ctx = canvas.getContext('2d');
     
@@ -172,5 +179,57 @@
     }
     animate();
   </script>
+
+  <script>
+    /* --- SEARCH REDIRECT LOGIC --- */
+    /* This is what was missing! It listens for the Enter key and redirects to the search page */
+    document.addEventListener("DOMContentLoaded", function() {
+      const navSearch = document.getElementById('nav-search-input');
+      if(navSearch) {
+        navSearch.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter' && this.value.trim() !== '') {
+            window.location.href = "{{ '/search.html' | relative_url }}?q=" + encodeURIComponent(this.value.trim());
+          }
+        });
+      }
+    });
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const query = urlParams.get('q');
+      
+      if (query) {
+        // Only read the Exact Phrase (ep) parameter
+        const isExactPhrase = urlParams.get('ep') === 'true';
+
+        // Highlight text ONLY inside the main content area (keeps navbar safe)
+        const contentArea = document.querySelector('.main-content');
+        if (contentArea) {
+          const instance = new Mark(contentArea);
+          const options = {
+            caseSensitive: false, // Always false now
+            accuracy: "partially", // Always partially now
+            separateWordSearch: !isExactPhrase, // Only toggles based on the Exact Phrase checkbox
+            element: "mark",
+            className: "search-highlight"
+          };
+          instance.mark(query, options);
+        }
+      }
+    });
+  </script>
+
+  <style>
+    /* Highlight Style */
+    mark.search-highlight {
+      background-color: #ffeb3b;
+      color: #000;
+      padding: 2px 0;
+      border-radius: 3px;
+    }
+  </style>
 </body>
 </html>

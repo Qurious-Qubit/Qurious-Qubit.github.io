@@ -1,0 +1,13 @@
+---
+---
+{% assign search_docs = site.blog | concat: site.qronicle | concat: site.html_pages | where_exp: "item", "item.title != nil" %}
+[
+  {% for doc in search_docs %}
+  {
+    "title"    : "{{ doc.title | escape }}",
+    "category" : "{% if doc.collection %}{{ doc.collection | capitalize }}{% else %}Page{% endif %}",
+    "url"      : "{{ site.baseurl }}{{ doc.url }}",
+    "content"  : {{ doc.content | strip_html | strip_newlines | jsonify }}
+  }{% unless forloop.last %},{% endunless %}
+  {% endfor %}
+]
