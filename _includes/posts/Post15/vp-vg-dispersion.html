@@ -1,0 +1,118 @@
+<div style="text-align: center; margin: 30px 0; padding: 20px; background: var(--card-bg, #1e1e1e); border: 1px solid var(--border-color, #444); border-radius: 8px; color: var(--text-color, white);">
+  <canvas id="vpvgCanvas" width="600" height="250" style="background: #2d2d2d; border-radius: 4px; max-width: 100%;"></canvas>
+  <br>
+  
+  <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 30px; margin-top: 20px; font-family: sans-serif; font-size: 14px;">
+    <div>
+      <strong>Phase Velocity (V<sub>p</sub>)</strong> - <em>Speed of the Ripples</em><br>
+      <input type="range" id="vpSlider" min="0.5" max="3" step="0.1" value="2.5" style="width: 150px;">
+      <span id="vpVal">2.5</span>
+    </div>
+    <div>
+      <strong>Group Velocity (V<sub>g</sub>)</strong> - <em>Speed of the Pulse</em><br>
+      <input type="range" id="vgSlider" min="0.5" max="3" step="0.1" value="1.0" style="width: 150px;">
+      <span id="vgVal">1.0</span>
+    </div>
+  </div>
+  
+  <div style="margin-top: 15px; display: flex; justify-content: center; gap: 15px;">
+    <button id="matchBtn" style="padding: 8px 16px; background: var(--accent-2, #3498db); color: white; border: none; border-radius: 4px; cursor: pointer;">
+      Make V<sub>p</sub> = V<sub>g</sub> (No Dispersion)
+    </button>
+  </div>
+  
+  <p id="dispersionStatus" style="margin-top: 15px; font-weight: bold;"></p>
+</div>
+
+<script>
+  const canvas = document.getElementById('vpvgCanvas');
+  const ctx = canvas.getContext('2d');
+  
+  const vpSlider = document.getElementById('vpSlider');
+  const vgSlider = document.getElementById('vgSlider');
+  const vpVal = document.getElementById('vpVal');
+  const vgVal = document.getElementById('vgVal');
+  const matchBtn = document.getElementById('matchBtn');
+  const statusTxt = document.getElementById('dispersionStatus');
+  
+  let time = 0;
+  
+  vpSlider.addEventListener('input', () => vpVal.innerText = vpSlider.value);
+  vgSlider.addEventListener('input', () => vgVal.innerText = vgSlider.value);
+  
+  matchBtn.addEventListener('click', () => {
+    vpSlider.value = vgSlider.value;
+    vpVal.innerText = vpSlider.value;
+  });
+
+  function animate() {
+    requestAnimationFrame(animate);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    time += 0.02; // Time step
+    
+    let vp = parseFloat(vpSlider.value) * 50; 
+    let vg = parseFloat(vgSlider.value) * 50;
+    
+    if (vpSlider.value === vgSlider.value) {
+        statusTxt.innerText = "Non-Dispersive: The ripples stay locked inside the pulse.";
+        statusTxt.style.color = "#2ecc71";
+    } else if (vpSlider.value > vgSlider.value) {
+        statusTxt.innerText = "Normal Dispersion: Ripples appear at the back and disappear at the front.";
+        statusTxt.style.color = "#e74c3c";
+    } else {
+        statusTxt.innerText = "Anomalous Dispersion: Ripples appear at the front and flow backwards.";
+        statusTxt.style.color = "#f39c12";
+    }
+    
+    // Calculate positions
+    // Modulo math keeps the pulse looping on screen
+    let groupCenter = (vg * time) % (canvas.width + 300) - 150;
+    
+    const k = 0.2; // Wavenumber (spatial frequency)
+    const sigma = 40; // Width of the pulse
+    const amplitude = 80;
+    const centerY = canvas.height / 2;
+    
+    // Draw the envelope (Gaussian)
+    ctx.beginPath();
+    for (let x = 0; x <= canvas.width; x++) {
+      let envelope = Math.exp(-Math.pow(x - groupCenter, 2) / (2 * Math.pow(sigma, 2)));
+      let y = centerY - amplitude * envelope;
+      if (x === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+    ctx.setLineDash([5, 5]);
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    
+    // Draw the internal wave (Sine * Gaussian)
+    ctx.beginPath();
+    ctx.setLineDash([]);
+    for (let x = 0; x <= canvas.width; x++) {
+      let envelope = Math.exp(-Math.pow(x - groupCenter, 2) / (2 * Math.pow(sigma, 2)));
+      // Internal wave phase depends on Vp
+      let internalWave = Math.cos(k * (x - vp * time));
+      let y = centerY - (amplitude * envelope * internalWave);
+      
+      if (x === 0) ctx.moveTo(x, y);
+      else ctx.lineTo(x, y);
+    }
+    // Color changes based on dispersion type
+    ctx.strokeStyle = (vpSlider.value === vgSlider.value) ? '#2ecc71' : '#3498db';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    
+    // Draw Group Velocity Tracker
+    ctx.beginPath();
+    ctx.moveTo(groupCenter, centerY - 100);
+    ctx.lineTo(groupCenter, centerY + 100);
+    ctx.strokeStyle = 'rgba(231, 76, 60, 0.8)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+    ctx.fillStyle = '#e74c3c';
+    ctx.fillText("Vg", groupCenter + 5, centerY - 85);
+  }
+  
+  animate();
+</script>

@@ -36,7 +36,7 @@ You will immediately see a physical wave traveling from your hand towards the wa
 
 ---
 
-{% include Post9/rope-animation.html %}
+{% include posts/Post9/rope-animation.html %}
 
 ---
 ## Why High Frequencies Change the Game
