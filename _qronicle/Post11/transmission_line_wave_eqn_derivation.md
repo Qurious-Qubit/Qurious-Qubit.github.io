@@ -80,9 +80,11 @@ If we observe closely, we notice something fantastic: **both $I$ and $V$ share t
 
 Now, this equation looks a bit heavy with all those time derivatives ($V'$ and $V''$). But in microwave engineering, we are usually dealing with continuous AC signals oscillating at a specific frequency. 
 
-Let's assume our signal is a standard time-harmonic wave, which we write mathematically using Euler's formula as $I = I_0 \exp(j\omega t)$.
+Because the wave varies in both space ($z$) and time ($t$), we can express the current as a function of both: $I(z, t)$. To make the math easy, we separate the spatial part from the time-oscillating part using Euler's formula: 
 
-When you take the time derivative of an exponential, the $j\omega$ simply comes down as a multiplier:
+$$I(z, t) = I_s(z) e^{j\omega t}$$
+
+Here, $I_s(z)$ is the spatial amplitude, and $e^{j\omega t}$ handles the continuous time oscillation. When you take the time derivative of an exponential, the $j\omega$ simply comes down as a multiplier:
 * First derivative: $I' = j\omega I$
 * Second derivative: $I'' = (j\omega)(j\omega) I = -\omega^2 I$
 
@@ -116,15 +118,17 @@ We have finally arrived at the standard second-order wave equation!
 
 ## The Final Wave Solution
 
-Since both voltage and current follow the exact same second-order differential equation, they share the exact same mathematical solution. For any equation of this form, the solution is simply a combination of two exponential functions:
+Since both voltage and current follow the exact same second-order differential equation, they share the exact same mathematical solution. For any equation of this form, the solution for the spatial part is a combination of two exponentials:
 
-$$V(z) = V_0^+ e^{-\gamma z} + V_0^- e^{+\gamma z}$$
+$$V_s(z) = V_0^+ e^{-\gamma z} + V_0^- e^{+\gamma z}$$
 
-$$I(z) = I_0^+ e^{-\gamma z} + I_0^- e^{+\gamma z}$$
+To get the *complete* physical wave, we just multiply that time-varying $e^{j\omega t}$ back in:
+
+$$V(z, t) = V_0^+ e^{-\gamma z} e^{j\omega t} + V_0^- e^{+\gamma z} e^{j\omega t}$$
 
 What does this actually mean physically?
-* The first term ($e^{-\gamma z}$) represents the **forward-traveling wave**. This is the pristine microwave pulse you are sending down the cable from your signal generator to the quantum chip.
-* The second term ($e^{+\gamma z}$) represents the **backward-traveling wave**. This is the reflection bouncing back up the cable due to impedance mismatches!
+* The first term ($e^{j\omega t - \gamma z}$) represents the **forward-traveling wave**. This is the pristine microwave pulse you are sending down the cable from your signal generator to the quantum chip.
+* The second term ($e^{j\omega t + \gamma z}$) represents the **reverse-traveling wave**. This is the reflection bouncing back up the cable due to impedance mismatches!
 
 ---
 
@@ -147,5 +151,3 @@ The propagation constant $\gamma$ is actually a complex number made of an attenu
 By comparing the terms, we can clearly see that for a lossless line, **$\alpha = 0$** and **$\beta = \omega\sqrt{LC}$**.
 
 This is a massive relief for quantum engineers! It mathematically proves that our microwave pulse will not lose any amplitude or energy ($\alpha = 0$) as it travels down into the fridge. It only experiences a predictable phase shift ($\beta$), which we can easily account for to execute perfect quantum logic gates.
-
-*(Note: Because this specific differential equation pattern appears everywhere in quantum mechanics and electromagnetics, we have created a dedicated mathematical post showing exactly how to derive this $e^{\gamma z}$ solution from scratch. You can read it here: [The Universal Wave Solution](https://qurious-qubit.github.io/blog/post-13/)).*

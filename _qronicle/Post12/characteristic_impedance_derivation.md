@@ -20,15 +20,17 @@ Since Voltage ($V$) is logically analogous to the E-field, and Current ($I$) is 
 
 ---
 
-## Setting Up the Wave
+## Setting Up the Total Space-Time Wave
 
-Let's look at just the forward-traveling wave. From our universal wave solution, we know we can write the voltage and current as exponentials. Since we are dealing with an AC signal, we also have that hidden time-harmonic part ($e^{j\omega t}$) attached to them:
+Let's look at just the forward-traveling wave. To really understand how the derivatives work, we need to look at the complete wave that depends on both space ($z$) and time ($t$). 
 
-$$I = I_0 e^{-\gamma z}$$
+From our last post, we know the forward-moving current and voltage look like this:
 
-$$V = V_0 e^{-\gamma z}$$
+$$I(z, t) = I_0 e^{-\gamma z} e^{j\omega t}$$
 
-*(Note: $I_0$ and $V_0$ are the amplitudes, and they inherently include that $e^{j\omega t}$ time oscillation).*
+$$V(z, t) = V_0 e^{-\gamma z} e^{j\omega t}$$
+
+Notice that $V_0$ and $I_0$ are not just static constants—they are the initial amplitudes of a time-varying field! The $e^{-\gamma z}$ part tells us how the wave changes as it moves through space, and the $e^{j\omega t}$ part tells us how it oscillates in time.
 
 Now, let's bring back our very first Telegrapher's Equation (the Voltage Equation) that we derived earlier:
 
@@ -38,21 +40,21 @@ $$-\frac{\partial V}{\partial z} = R I + L \frac{\partial I}{\partial t}$$
 
 ## The Derivation
 
-Let's plug our exponential wave equations into this Telegrapher's equation. 
+Let's plug our total space-time wave equations into this Telegrapher's equation. 
 
-First, let's take the spatial derivative of the voltage ($\frac{\partial V}{\partial z}$). The derivative of $e^{-\gamma z}$ simply brings down a $-\gamma$:
+First, let's take the spatial derivative of the voltage ($\frac{\partial V}{\partial z}$). Because we are differentiating with respect to $z$, the time part ($e^{j\omega t}$) stays exactly the same, and the derivative of $e^{-\gamma z}$ simply brings down a $-\gamma$:
 
-$$-\frac{\partial V}{\partial z} = -(-\gamma V_0 e^{-\gamma z}) = \gamma V_0 e^{-\gamma z}$$
+$$-\frac{\partial V}{\partial z} = -(-\gamma V_0 e^{-\gamma z} e^{j\omega t}) = \gamma V_0 e^{-\gamma z} e^{j\omega t}$$
 
-Next, let's look at the right side of the equation. We know that taking the time derivative ($\frac{\partial I}{\partial t}$) of our time-harmonic current just brings down a $j\omega$. So the right side becomes:
+Next, let's look at the right side of the equation. We need to take the time derivative ($\frac{\partial I}{\partial t}$) of our current. Because we are differentiating with respect to time ($t$), the spatial part ($e^{-\gamma z}$) is untouched, and taking the derivative of $e^{j\omega t}$ pulls out a $j\omega$:
 
-$$R(I_0 e^{-\gamma z}) + L(j\omega I_0 e^{-\gamma z})$$
+$$R(I_0 e^{-\gamma z} e^{j\omega t}) + L(j\omega I_0 e^{-\gamma z} e^{j\omega t})$$
 
 Now, let's equate both sides:
 
-$$\gamma V_0 e^{-\gamma z} = I_0 e^{-\gamma z} R + j\omega L I_0 e^{-\gamma z}$$
+$$\gamma V_0 e^{-\gamma z} e^{j\omega t} = I_0 e^{-\gamma z} e^{j\omega t} R + j\omega L I_0 e^{-\gamma z} e^{j\omega t}$$
 
-Notice that the $e^{-\gamma z}$ term is common everywhere. We can beautifully cancel it out from both sides:
+Notice that the entire wave term ($e^{-\gamma z} e^{j\omega t}$) is common everywhere. We can beautifully cancel it out from both sides, leaving only the amplitudes:
 
 $$\gamma V_0 = I_0 (R + j\omega L)$$
 
@@ -68,7 +70,7 @@ This ratio is exactly what we call the **Characteristic Impedance ($Z_0$)**. But
 
 $$\gamma^2 = (R + j\omega L)(G + j\omega C)$$
 
-Which means $\gamma = \sqrt{(R + j\omega L)(G + j\omega C)}$. Let's substitute this into our $Z_0$ equation:
+Which means $\gamma = \sqrt{(R + j\omega L)(G + j\omega C)}$. Let's substitute this into our $Z_0 equation:
 
 $$Z_0 = \frac{R + j\omega L}{\sqrt{(R + j\omega L)(G + j\omega C)}}$$
 
