@@ -1,0 +1,132 @@
+<div style="text-align: center; margin: 30px 0; padding: 20px; background: var(--card-bg, #1e1e1e); border: 1px solid var(--border-color, #444); border-radius: 8px; color: var(--text-color, white);">
+  <canvas id="smithCanvas" width="400" height="400" style="background: #2d2d2d; border-radius: 50%; max-width: 100%; box-shadow: 0 4px 8px rgba(0,0,0,0.3);"></canvas>
+  <br>
+  
+  <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 20px; margin-top: 20px; font-family: sans-serif; font-size: 14px;">
+    <div>
+      <strong>Normalized Resistance (r)</strong><br>
+      <input type="range" id="rSlider" min="0" max="5" step="0.1" value="1"><br>
+      <span id="rValue">1.0</span>
+    </div>
+    <div>
+      <strong>Normalized Reactance (x)</strong><br>
+      <input type="range" id="xSlider" min="-5" max="5" step="0.1" value="1"><br>
+      <span id="xValue">1.0</span> j
+    </div>
+  </div>
+  
+  <p id="gammaStatus" style="margin-top: 15px; font-weight: bold; color: #3498db;"></p>
+</div>
+
+<script>
+  const sCanvas = document.getElementById('smithCanvas');
+  const sCtx = sCanvas.getContext('2d');
+  
+  const rSlider = document.getElementById('rSlider');
+  const xSlider = document.getElementById('xSlider');
+  const rValueTxt = document.getElementById('rValue');
+  const xValueTxt = document.getElementById('xValue');
+  const gammaStatus = document.getElementById('gammaStatus');
+
+  const centerX = sCanvas.width / 2;
+  const centerY = sCanvas.height / 2;
+  const radius = 190; // Chart boundary
+
+  function drawCircle(u, v, r, color, dashed=false) {
+    sCtx.beginPath();
+    sCtx.arc(centerX + u * radius, centerY - v * radius, r * radius, 0, 2 * Math.PI);
+    sCtx.strokeStyle = color;
+    if(dashed) sCtx.setLineDash([5, 5]);
+    else sCtx.setLineDash([]);
+    sCtx.stroke();
+  }
+
+  function drawArc(u, v, r, color) {
+    sCtx.beginPath();
+    sCtx.arc(centerX + u * radius, centerY - v * radius, r * radius, 0, 2 * Math.PI);
+    sCtx.strokeStyle = color;
+    sCtx.setLineDash([]);
+    sCtx.stroke();
+  }
+
+  function drawGrid() {
+    sCtx.clearRect(0, 0, sCanvas.width, sCanvas.height);
+    sCtx.lineWidth = 1;
+
+    // Main boundary (|Gamma| = 1)
+    drawCircle(0, 0, 1, '#666');
+    
+    // Horizontal axis
+    sCtx.beginPath();
+    sCtx.moveTo(centerX - radius, centerY);
+    sCtx.lineTo(centerX + radius, centerY);
+    sCtx.strokeStyle = '#666';
+    sCtx.stroke();
+
+    // Constant Resistance Circles (r = 0.5, 1, 2)
+    const rVals = [0.5, 1, 2];
+    rVals.forEach(r => {
+      let u = r / (r + 1);
+      let R = 1 / (r + 1);
+      drawCircle(u, 0, R, '#555', true);
+    });
+
+    // Constant Reactance Arcs (x = 0.5, 1, 2, -0.5, -1, -2)
+    // Only drawing basic representations for the grid feel
+    const xVals = [0.5, 1, 2, -0.5, -1, -2];
+    xVals.forEach(x => {
+      sCtx.beginPath();
+      let u = 1;
+      let v = 1 / x;
+      let R = Math.abs(1 / x);
+      sCtx.arc(centerX + u * radius, centerY - v * radius, R * radius, 0, 2 * Math.PI);
+      sCtx.strokeStyle = '#555';
+      sCtx.stroke();
+    });
+    
+    // Clear outside the main circle to keep it clean
+    sCtx.globalCompositeOperation = 'destination-in';
+    sCtx.beginPath();
+    sCtx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+    sCtx.fill();
+    sCtx.globalCompositeOperation = 'source-over';
+  }
+
+  function updatePlot() {
+    let r = parseFloat(rSlider.value);
+    let x = parseFloat(xSlider.value);
+    
+    rValueTxt.innerText = r.toFixed(1);
+    xValueTxt.innerText = x.toFixed(1);
+
+    drawGrid();
+
+    // Calculate Gamma = (z - 1) / (z + 1)
+    let denom = Math.pow(r + 1, 2) + Math.pow(x, 2);
+    let u = (Math.pow(r, 2) - 1 + Math.pow(x, 2)) / denom;
+    let v = (2 * x) / denom;
+
+    // Calculate Magnitude and Phase
+    let mag = Math.sqrt(u*u + v*v);
+    let phase = Math.atan2(v, u) * (180 / Math.PI);
+
+    gammaStatus.innerText = `Reflection (Γ) = ${mag.toFixed(2)} ∠ ${phase.toFixed(1)}°`;
+
+    // Plot the point
+    let plotX = centerX + u * radius;
+    let plotY = centerY - v * radius;
+
+    sCtx.beginPath();
+    sCtx.arc(plotX, plotY, 6, 0, 2 * Math.PI);
+    sCtx.fillStyle = '#e74c3c';
+    sCtx.fill();
+    sCtx.strokeStyle = '#fff';
+    sCtx.lineWidth = 2;
+    sCtx.stroke();
+  }
+
+  rSlider.addEventListener('input', updatePlot);
+  xSlider.addEventListener('input', updatePlot);
+  
+  updatePlot();
+</script>
