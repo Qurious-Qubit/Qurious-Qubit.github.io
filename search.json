@@ -4,9 +4,9 @@
 [
   {% for doc in search_docs %}
   {
-    "title"    : "{{ doc.title | escape }}",
+    "title"    : {{ doc.title | jsonify }},
     "category" : "{% if doc.collection %}{{ doc.collection | capitalize }}{% else %}Page{% endif %}",
-    "url"      : "{{ site.baseurl }}{{ doc.url }}",
+    "url"      : {{ doc.url | relative_url | jsonify }},
     "content"  : {{ doc.content | strip_html | strip_newlines | jsonify }}
   }{% unless forloop.last %},{% endunless %}
   {% endfor %}

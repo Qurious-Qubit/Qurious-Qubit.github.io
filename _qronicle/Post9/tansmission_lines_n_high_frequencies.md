@@ -10,7 +10,6 @@ field: Microwave-Engg
 level: L1-Foundational
 images:
   - /images/qronicle/post9/image1.jpg
-  - /images/qronicle/post9/image2.jpg
   
 ---
 

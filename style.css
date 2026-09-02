@@ -1,23 +1,16 @@
-/* --- GLOBAL CURSOR CANVAS --- */
-#cursor-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none; /* Let's you click through the canvas to your links */
-  z-index: 9999; /* Keeps the effect on top of all other elements */
-}
-
 /* --- THEME VARIABLES --- */
 :root {
   /* Concept B: Electromagnetic Field (Light Mode) */
   --bg-color: #f0f0f0;
   --text-color: rgb(27, 26, 26);
   --navbar-bg: #000000;
-  --navbar-text: #ffffff;
+  --navbar-text: #1a202c;
+  --navbar-pill-bg: rgba(255, 255, 255, 0.88);
+  --navbar-border: rgba(0, 0, 0, 0.1);
+  --navbar-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  --nav-hover-bg: rgba(0, 0, 0, 0.05);
   --card-bg: #ffffff;
-  --accent-1: #00ffff; 
+  --accent-1: #0891b2; 
   --accent-2: #2575fc; 
   --shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
   --footer-bg: #000000;
@@ -37,7 +30,11 @@
   --bg-color: #0d1117;
   --text-color: #c9d1d9;
   --navbar-bg: #010409;
-  --navbar-text: #c9d1d9;
+  --navbar-text: #f1f5f9;
+  --navbar-pill-bg: rgba(16, 22, 34, 0.85);
+  --navbar-border: rgba(255, 255, 255, 0.12);
+  --navbar-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  --nav-hover-bg: rgba(255, 255, 255, 0.08);
   --card-bg: #161b22;
   --accent-1: #00ffff; 
   --accent-2: #ff00ff; 
@@ -70,47 +67,108 @@ body, html {
   overflow-x: hidden;
 }
 
-/* Navbar */
+/* Floating Centered Pill Navbar */
+.navbar-wrapper {
+  position: fixed;
+  top: 15px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  z-index: 1000;
+  padding: 0 15px;
+  pointer-events: none; /* Allows click-through outside the pill */
+}
+
 .navbar {
-  background-color: var(--navbar-bg);
-  height: 8vh;
-  min-height: 60px;
+  pointer-events: auto;
+  background-color: var(--navbar-pill-bg);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--navbar-border);
+  box-shadow: var(--navbar-shadow);
+  border-radius: 50px;
+  min-height: 48px;
   display: flex;
   align-items: center;
   justify-content: center;
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 1000;
-  transition: background-color 0.3s ease;
+  padding: 5px 16px;
+  gap: 12px;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  max-width: 960px;
 }
 
-.navbar a {
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.nav-links a {
   color: var(--navbar-text);
-  margin: 0 20px;
   text-decoration: none;
-  font-weight: bold;
-  font-size: clamp(14px, 2vw, 20px);
-  transition: color 0.2s;
+  font-weight: 600;
+  font-size: 14.5px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  transition: all 0.2s ease;
 }
 
-.navbar a:hover { color: var(--accent-1); }
+.nav-links a:hover {
+  color: var(--accent-1);
+  background-color: var(--nav-hover-bg);
+}
+
+.nav-divider {
+  width: 1px;
+  height: 20px;
+  background-color: var(--navbar-border);
+  opacity: 0.8;
+  margin: 0 4px;
+}
+
+.nav-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#nav-search-input {
+  padding: 5px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--border-color);
+  background: var(--card-bg);
+  color: var(--text-color);
+  width: 130px;
+  font-size: 13px;
+  outline: none;
+  transition: width 0.3s ease, border-color 0.3s ease;
+}
+
+#nav-search-input:focus {
+  border-color: var(--accent-2);
+  width: 170px;
+}
 
 /* Theme Toggle Button */
 #theme-toggle {
   background: none;
   border: 1px solid var(--border-color);
   color: var(--navbar-text);
-  padding: 5px 15px;
+  padding: 5px 12px;
   border-radius: 20px;
   cursor: pointer;
-  font-weight: bold;
-  margin-left: 20px;
+  font-weight: 600;
+  font-size: 13px;
   transition: all 0.3s ease;
+  white-space: nowrap;
 }
+
 #theme-toggle:hover {
   border-color: var(--accent-1);
   color: var(--accent-1);
+  background-color: var(--nav-hover-bg);
 }
 
 /* Main Content */
@@ -119,7 +177,7 @@ body, html {
   width: 100%;
   margin: 0 auto;
   padding: 40px 20px;
-  margin-top: 8vh; 
+  margin-top: 80px; 
   flex: 1;
 }
 
@@ -131,7 +189,7 @@ body, html {
   min-height: 400px;
   background-color: var(--particle-bg);
   overflow: hidden;
-  margin-top: 8vh;
+  margin-top: 80px;
   transition: background-color 0.3s ease;
 }
 
@@ -352,21 +410,43 @@ body, html {
 
 /* --- THE MAGIC FIX: AGGRESSIVE MOBILE MEDIA QUERY --- */
 @media (max-width: 768px) {
-  /* Navbar Overhaul */
+  /* Floating Navbar Mobile Overhaul */
+  .navbar-wrapper {
+    top: 10px;
+    padding: 0 10px;
+  }
   .navbar { 
-    height: auto; 
-    padding: 10px 5px; 
-    flex-wrap: wrap; 
+    border-radius: 24px;
+    padding: 10px 14px; 
+    flex-direction: column; 
+    gap: 8px;
+    width: 100%;
+    max-width: 480px;
+  }
+  .nav-divider {
+    display: none;
+  }
+  .nav-links {
+    justify-content: center;
+    gap: 4px;
+    flex-wrap: wrap;
+  }
+  .nav-links a { 
+    font-size: 13.5px; 
+    padding: 4px 8px; 
+  }
+  .nav-controls {
+    width: 100%;
+    justify-content: center;
     gap: 8px;
   }
-  .navbar a { 
-    font-size: 14px; 
-    margin: 0 5px; 
+  #nav-search-input {
+    width: 140px;
   }
   #theme-toggle {
-    margin: 5px 0 0 0;
+    margin: 0;
     font-size: 12px;
-    padding: 5px 10px;
+    padding: 4px 10px;
   }
 
   /* Hero Section Overhaul */
@@ -377,7 +457,7 @@ body, html {
   
   /* Main content spacing */
   .main-content { 
-    margin-top: 12vh; 
+    margin-top: 110px; 
     padding: 20px 10px; 
   }
   

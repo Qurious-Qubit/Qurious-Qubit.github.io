@@ -13,19 +13,21 @@
   </script>
 </head>
 <body>
-  <canvas id="cursor-canvas" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9999; display: block; margin: 0; padding: 0;"></canvas>
-  
-  <div class="navbar">
-    <a href="{{ '/' | relative_url }}">About</a>
-    <a href="{{ '/blog.html' | relative_url }}">Blog</a>
-    <a href="{{ '/qronicle.html' | relative_url }}">Qronicle</a>
-    <a href="{{ '/team.html' | relative_url }}">Team</a>
-    <a href="{{ '/contact.html' | relative_url }}">Contact</a>
-    
-    <div style="position: absolute; right: 20px; display: flex; align-items: center; gap: 15px;">
-      <button id="theme-toggle">🌓 Toggle Theme</button>
-      <input type="text" id="nav-search-input" placeholder="Search & press Enter..." style="padding: 5px 10px; border-radius: 15px; border: 1px solid var(--border-color); background: var(--card-bg); color: var(--text-color); width: 200px;">
-    </div>
+  <div class="navbar-wrapper">
+    <nav class="navbar">
+      <div class="nav-links">
+        <a href="{{ '/' | relative_url }}">About</a>
+        <a href="{{ '/blog.html' | relative_url }}">Blog</a>
+        <a href="{{ '/qronicle.html' | relative_url }}">Qronicle</a>
+        <a href="{{ '/team.html' | relative_url }}">Team</a>
+        <a href="{{ '/contact.html' | relative_url }}">Contact</a>
+      </div>
+      <div class="nav-divider"></div>
+      <div class="nav-controls">
+        <button id="theme-toggle">🌓 Theme</button>
+        <input type="text" id="nav-search-input" placeholder="Search...">
+      </div>
+    </nav>
   </div>
 
   {{ content }}
@@ -52,132 +54,6 @@
       // Tell the rest of the site that the theme changed
       window.dispatchEvent(new CustomEvent('themeChanged', { detail: { theme: newTheme } }));
     });
-  </script>
-  
-  <script>
-    /* --- CURSOR CANVAS ANIMATION --- */
-    const canvas = document.getElementById('cursor-canvas');
-    const ctx = canvas.getContext('2d');
-    
-    let width, height;
-    let mouse = { x: -1000, y: -1000, vx: 0, vy: 0 };
-    let lastMouse = { x: -1000, y: -1000 };
-    
-    let trailParticles = [];
-    let boomParticles = [];
-
-    function resize() {
-      width = window.innerWidth;
-      height = window.innerHeight;
-      canvas.width = width;
-      canvas.height = height;
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
-    window.addEventListener('mousemove', (e) => {
-      lastMouse.x = mouse.x;
-      lastMouse.y = mouse.y;
-      mouse.x = e.clientX;
-      mouse.y = e.clientY;
-      mouse.vx = mouse.x - lastMouse.x;
-      mouse.vy = mouse.y - lastMouse.y;
-    });
-
-    window.addEventListener('mousedown', (e) => {
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      const numParticles = Math.floor(Math.random() * 15) + 20; 
-      
-      for (let i = 0; i < numParticles; i++) {
-        const angle = Math.random() * Math.PI * 2;
-        const speed = Math.random() * 6 + 2; 
-        boomParticles.push({
-          x: e.clientX,
-          y: e.clientY,
-          vx: Math.cos(angle) * speed,
-          vy: Math.sin(angle) * speed,
-          size: Math.random() * 4 + 1,
-          life: 1.0,
-          color: isDark ? `rgba(0, 255, 255,` : `rgba(211, 84, 0,` 
-        });
-      }
-    });
-
-    function animate() {
-      ctx.clearRect(0, 0, width, height);
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-
-      if (mouse.x > 0 && mouse.y > 0) {
-        for(let i = 0; i < 2; i++) {
-          trailParticles.push({
-            x: mouse.x + (Math.random() - 0.5) * 5, 
-            y: mouse.y + (Math.random() - 0.5) * 5,
-            vx: (mouse.vx * -0.1) + (Math.random() - 0.5) * 1.5,
-            vy: (mouse.vy * -0.1) + (Math.random() - 0.5) * 1.5,
-            size: Math.random() * 4 + 1.5, 
-            life: 1.0,
-            decay: Math.random() * 0.04 + 0.03 
-          });
-        }
-      }
-
-      for (let i = trailParticles.length - 1; i >= 0; i--) {
-        let p = trailParticles[i];
-        
-        p.x += p.vx;
-        p.y += p.vy;
-        p.life -= p.decay;
-        p.size *= 0.95; 
-        
-        if (p.life <= 0 || p.size < 0.5) {
-          trailParticles.splice(i, 1);
-        } else {
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-          
-          if (isDark) {
-            const r = Math.floor(p.life * 255);
-            const g = Math.floor(p.life * 255 + (1-p.life)*255);
-            const b = 255;
-            ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${p.life})`;
-          } else {
-            const r = 255;
-            const g = Math.floor(p.life * 255);
-            const b = Math.floor((p.life - 0.5) * 510);
-            ctx.fillStyle = `rgba(${r}, ${Math.max(0, g)}, ${Math.max(0, b)}, ${p.life})`;
-          }
-          ctx.fill();
-        }
-      }
-
-      if (mouse.x > 0 && mouse.y > 0) {
-        ctx.beginPath();
-        ctx.arc(mouse.x, mouse.y, 2, 0, Math.PI * 2); 
-        ctx.fillStyle = isDark ? '#ffffff' : '#333333';
-        ctx.fill();
-      }
-
-      for (let i = boomParticles.length - 1; i >= 0; i--) {
-        let p = boomParticles[i];
-        p.x += p.vx;
-        p.y += p.vy;
-        p.life -= 0.02; 
-        
-        if (p.life <= 0) {
-          boomParticles.splice(i, 1);
-        } else {
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-          ctx.fillStyle = p.color + `${p.life})`;
-          ctx.fill();
-        }
-      }
-
-      mouse.vx *= 0.8;
-      mouse.vy *= 0.8;
-      requestAnimationFrame(animate);
-    }
-    animate();
   </script>
 
   <script>

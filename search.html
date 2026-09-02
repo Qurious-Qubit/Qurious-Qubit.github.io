@@ -101,10 +101,17 @@ title: Search Results
       const li = document.createElement('li');
       li.style.cssText = 'padding: 15px; border-bottom: 1px solid var(--border-color); margin-bottom: 10px; background: var(--card-bg); border-radius: 8px;';
       
-      li.innerHTML = `<a href="${doc.url}${params}" style="color: var(--accent-2); text-decoration: none; font-size: 1.1em; font-weight: bold;">
-                        ${doc.title}
-                      </a>
-                      <br><small style="color: #888;">Category: ${doc.category}</small>`;
+      const a = document.createElement('a');
+      a.href = `${doc.url}${params}`;
+      a.style.cssText = 'color: var(--accent-2); text-decoration: none; font-size: 1.1em; font-weight: bold;';
+      a.textContent = doc.title;
+      
+      const meta = document.createElement('small');
+      meta.style.cssText = 'display: block; color: #888; margin-top: 4px;';
+      meta.textContent = `Category: ${doc.category}`;
+
+      li.appendChild(a);
+      li.appendChild(meta);
       resultsList.appendChild(li);
     });
 

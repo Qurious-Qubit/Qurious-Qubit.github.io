@@ -25,6 +25,28 @@ title: The Qronicle | My Learning Journey
     background: var(--accent-2);
     color: #fff;
   }
+  .wiki-part-badge {
+    background: var(--accent-1);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    min-width: max-content;
+  }
+  [data-theme="dark"] .wiki-part-badge {
+    color: #010409;
+  }
+  .wiki-topic-tag {
+    font-size: 0.75rem;
+    color: var(--accent-1);
+    border: 1px solid var(--accent-1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-right: 5px;
+    display: inline-block;
+    margin-bottom: 4px;
+  }
 </style>
 
 <div class="hero-wrapper" style="height: 30vh; min-height: 250px;">
@@ -61,7 +83,7 @@ title: The Qronicle | My Learning Journey
           <div class="post-content-1">
             
             <h3 style="display: flex; align-items: center; gap: 8px;">
-              <span style="background: var(--accent-1); color: #fff; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; min-width: max-content;">
+              <span class="wiki-part-badge">
                 Part {{ note.order }}
               </span>
               {{ note.title }}
@@ -71,7 +93,7 @@ title: The Qronicle | My Learning Journey
             
             <div style="margin-top: 10px; margin-bottom: 15px;">
               {% for tag in note.topic %}
-                <span style="font-size: 0.75rem; color: var(--accent-1); border: 1px solid var(--accent-1); padding: 2px 6px; border-radius: 4px; margin-right: 5px;">
+                <span class="wiki-topic-tag">
                   {{ tag | capitalize }}
                 </span>
               {% endfor %}
@@ -153,6 +175,14 @@ title: The Qronicle | My Learning Journey
           }
         });
       });
-    });
+    // Check URL parameters for active filters when page loads
+    const urlParams = new URLSearchParams(window.location.search);
+    const filterFromUrl = (urlParams.get('filter') || urlParams.get('topic') || '').toLowerCase();
+    if (filterFromUrl) {
+      const targetBtn = document.querySelector(`[data-filter="${filterFromUrl}"]`);
+      if (targetBtn) {
+        targetBtn.click();
+      }
+    }
   });
 </script>

@@ -3,6 +3,7 @@ layout: post
 title: "Beyond the Straight Line: Deriving Snell's Law and Fresnel Equations from Scratch"
 description: "What happens when a microwave hits a boundary at an angle? A very simple, layman-friendly derivation of oblique incidence, Snell's Law, and the Fresnel equations."
 order: 7
+slug: "7"
 topic: [Theory, EM-Theory, L1-Foundational, Derivation]
 images:
   - /images/qronicle/post7/image1.png

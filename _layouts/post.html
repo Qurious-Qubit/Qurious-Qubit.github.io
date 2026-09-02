@@ -13,15 +13,17 @@ layout: default
       </tr>
 
       <tr>
-        <td class="post-content-text">
+        <td class="post-content-text"{% unless page.images and page.images.size > 0 %} colspan="2" style="width: 100%;"{% endunless %}>
           {{ content }}
         </td>
 
+        {% if page.images and page.images.size > 0 %}
         <td class="post-content-image">
           {% for img in page.images %}
-            <img src="{{ img }}" alt="Post Image" class="post-image">
+            <img src="{{ img | relative_url }}" alt="Post Image" class="post-image">
           {% endfor %}
         </td>
+        {% endif %}
       </tr>
 
       {% if page.resources %}
@@ -56,14 +58,12 @@ layout: default
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
 <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js" onload="initKaTeX()"></script>
 
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    // This targets your specific markdown content area
+  function initKaTeX() {
     const contentArea = document.querySelector('.post-content-text');
-    
-    if (contentArea) {
+    if (contentArea && window.renderMathInElement) {
       renderMathInElement(contentArea, {
         delimiters: [
           // Catches raw Markdown display math
@@ -78,6 +78,12 @@ layout: default
         throwOnError: false, // Prevents a single typo from breaking the whole page
         output: 'html' // Ensures clean, selectable math text
       });
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", function() {
+    if (window.renderMathInElement) {
+      initKaTeX();
     }
   });
 </script>
