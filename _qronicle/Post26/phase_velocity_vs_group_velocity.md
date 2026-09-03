@@ -2,12 +2,12 @@
 layout: post
 title: "The Relativity Illusion: Phase Velocity vs. Group Velocity"
 description: "Can anything inside a waveguide travel faster than light? Let us resolve Einstein's apparent paradox and derive the elegant relationship between phase velocity and group velocity."
-order: 25
-slug: "25"
+order: 26
+slug: "26"
 topic: [Theory, Derivation, EM-Theory, Microwave-Engg, L2-Intermediate]
 images:
-  - /images/qronicle/post25/image1.jpg
-  - /images/qronicle/post25/image2.jpg
+  - /images/qronicle/post26/image1.jpg
+  - /images/qronicle/post26/image2.jpg
 references:
   - name: "Microwave Engineering - David M. Pozar (Phase and Group Velocity)"
     link: "https://www.wiley.com/en-us/Microwave+Engineering%2C+4th+Edition-p-9780470631553"
@@ -172,4 +172,4 @@ We now understand how fast waves travel down the pipe. But what resistance does 
 
 In free space, an electromagnetic wave sees an intrinsic impedance of about $377 \ \Omega$. But inside a waveguide, the impedance completely changes depending on whether the wave is **Transverse Electric (TE)** or **Transverse Magnetic (TM)**!
 
-In **Post 26**, we will derive the **Wave Impedance** and discover why a waveguide behaves like an open circuit at one moment and a dead short at another!
+In **Post 27**, we will derive the **Wave Impedance** and discover why a waveguide behaves like an open circuit at one moment and a dead short at another!

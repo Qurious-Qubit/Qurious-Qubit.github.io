@@ -2,12 +2,12 @@
 layout: post
 title: "Bending the Boundaries: Circular Waveguides & Bessel Functions"
 description: "What happens when you bend a waveguide into a cylinder? Let us step from Cartesian into Cylindrical coordinates and see why Bessel functions emerge."
-order: 28
-slug: "28"
+order: 29
+slug: "29"
 topic: [Theory, Derivation, EM-Theory, Microwave-Engg, L3-Advanced]
 images:
-  - /images/qronicle/post28/image1.jpg
-  - /images/qronicle/post28/image2.jpg
+  - /images/qronicle/post29/image1.jpg
+  - /images/qronicle/post29/image2.jpg
 references:
   - name: "Microwave Engineering - David M. Pozar (Circular Waveguides)"
     link: "https://www.wiley.com/en-us/Microwave+Engineering%2C+4th+Edition-p-9780470631553"
@@ -184,12 +184,14 @@ Because circular cavities can be lathed with extraordinary geometric precision, 
 
 ## Wrapping Up the Series
 
-Over the course of these six posts, we have demystified guided wave physics from top to bottom:
-1. **Post 23:** Why wires fail and how the cutoff frequency acts as a toll booth.
+Over the course of these seven posts, we have demystified guided wave physics from top to bottom:
+1. **Post 23: Why TEM waves cannot exist and the momentum budget.
+2. **Post 24:** Deriving TE and TM modes and forbidden states.
+7. **Post 29:** The zig-zag path and phase constant. and how the cutoff frequency acts as a toll booth.
 2. **Post 24:** The internal zig-zag bouncing path and how $\beta = \sqrt{k^2 - k_c^2}$ governs forward propagation.
-3. **Post 25:** Resolving the faster-than-light illusion of phase velocity vs group velocity ($v_p \cdot v_g = u^2$).
-4. **Post 26:** The impedance of a box—how TE modes act like open circuits and TM modes act like shorts at cutoff.
-5. **Post 27:** Why rectangular guides use an aspect ratio of $a = 2b$ and avoiding the catastrophic square waveguide degeneracy.
-6. **Post 28:** Conquering cylindrical boundaries with Bessel functions, discovering the dominant $TE_{11}$ mode, and leveraging rotary joints.
+7. **Post 29:** Resolving the faster-than-light illusion of phase velocity vs group velocity ($v_p \cdot v_g = u^2$).
+7. **Post 29:** The impedance of a box—how TE modes act like open circuits and TM modes act like shorts at cutoff.
+7. **Post 29:** Why rectangular guides use an aspect ratio of $a = 2b$ and avoiding the catastrophic square waveguide degeneracy.
+7. **Post 29:** Conquering cylindrical boundaries with Bessel functions, discovering the dominant $TE_{11}$ mode, and leveraging rotary joints.
 
 You now possess the foundational knowledge that bridges classical microwave engineering with modern quantum hardware design!

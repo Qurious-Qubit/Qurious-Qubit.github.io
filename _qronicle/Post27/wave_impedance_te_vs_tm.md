@@ -2,12 +2,12 @@
 layout: post
 title: "The Impedance of a Box: Wave Impedance in TE vs TM Modes"
 description: "Why does free space have a constant 377 Ohm impedance, while a waveguide's impedance swings from zero to infinity? Let us derive wave impedance for TE and TM modes."
-order: 26
-slug: "26"
+order: 27
+slug: "27"
 topic: [Theory, Derivation, Microwave-Engg, L2-Intermediate]
 images:
-  - /images/qronicle/post26/image1.jpg
-  - /images/qronicle/post26/image2.jpg
+  - /images/qronicle/post27/image1.jpg
+  - /images/qronicle/post27/image2.jpg
 references:
   - name: "Microwave Engineering - David M. Pozar (Wave Impedance)"
     link: "https://www.wiley.com/en-us/Microwave+Engineering%2C+4th+Edition-p-9780470631553"
@@ -158,4 +158,4 @@ We now have a complete mathematical grasp of cutoff frequencies, phase constants
 
 Now, let us put on our design engineer hats: How do we actually choose the dimensions of a rectangular waveguide? Why is the width $a$ almost universally chosen to be exactly twice the height ($a = 2b$)? And what disaster happens if you make the waveguide a perfect square?
 
-In **Post 27**, we will explore **Dominant Modes, Degenerate Modes, and The Dreaded Square Waveguide Disaster**!
+In **Post 28**, we will explore **Dominant Modes, Degenerate Modes, and The Dreaded Square Waveguide Disaster**!

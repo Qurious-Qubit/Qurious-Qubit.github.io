@@ -2,12 +2,12 @@
 layout: post
 title: "Dominant Modes, Degenerate Modes, and the Square Waveguide Disaster"
 description: "Why are commercial waveguides strictly rectangular with a 2:1 aspect ratio? Let us explore dominant modes, degenerate modes, and why square waveguides are an engineer's nightmare."
-order: 27
-slug: "27"
+order: 28
+slug: "28"
 topic: [Theory, Design, Microwave-Engg, Quantum-Tech, L2-Intermediate]
 images:
-  - /images/qronicle/post27/image1.jpg
-  - /images/qronicle/post27/image2.jpg
+  - /images/qronicle/post28/image1.jpg
+  - /images/qronicle/post28/image2.jpg
 references:
   - name: "Microwave Engineering - David M. Pozar (Rectangular Waveguide Modes)"
     link: "https://www.wiley.com/en-us/Microwave+Engineering%2C+4th+Edition-p-9780470631553"
@@ -149,4 +149,4 @@ What happens if you smooth out those corners and bend the metallic pipe into a p
 
 In a circular waveguide, flat Cartesian coordinates $(x, y)$ no longer work, and standard sines and cosines break down. We must step into the realm of cylindrical coordinates and introduce one of the most famous tools in applied mathematics: **Bessel Functions**!
 
-In **Post 28**, we will explore **Circular Waveguides, Bessel Functions, and Rotary Joints**!
+In **Post 29**, we will explore **Circular Waveguides, Bessel Functions, and Rotary Joints**!

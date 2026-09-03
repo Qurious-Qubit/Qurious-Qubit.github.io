@@ -2,12 +2,12 @@
 layout: post
 title: "The Zig-Zag Path: Phase Constant (beta) and Wave Propagation"
 description: "Waves inside a waveguide do not travel in a straight line like bullets. Let us uncover the zig-zag bouncing mechanism and how the phase constant controls propagation."
-order: 24
-slug: "24"
+order: 25
+slug: "25"
 topic: [Theory, EM-Theory, Microwave-Engg, L2-Intermediate]
 images:
-  - /images/qronicle/post24/image1.jpg
-  - /images/qronicle/post24/image2.jpg
+  - /images/qronicle/post25/image1.jpg
+  - /images/qronicle/post25/image2.jpg
 references:
   - name: "Microwave Engineering - David M. Pozar (Chapter 3: Waveguides)"
     link: "https://www.wiley.com/en-us/Microwave+Engineering%2C+4th+Edition-p-9780470631553"
@@ -138,4 +138,4 @@ If you calculate how fast the individual wave crests travel, you will find that 
 
 Did Einstein make a mistake? Or is there a deeper physical truth? 
 
-In **Post 25**, we will dive into **Phase Velocity vs Group Velocity** and unravel this fascinating relativity illusion!
+In **Post 26**, we will dive into **Phase Velocity vs Group Velocity** and unravel this fascinating relativity illusion!
