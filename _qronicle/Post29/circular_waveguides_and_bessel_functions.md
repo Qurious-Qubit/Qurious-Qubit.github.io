@@ -90,22 +90,66 @@ Now, substitute $-n^2$ back into the radial portion of the equation:
 
 $$r^2 \frac{d^2 R}{dr^2} + r \frac{dR}{dr} + (k_c^2 r^2 - n^2)R = 0$$
 
-This famous differential equation is known as **Bessel's Differential Equation**. Its general solution is composed of two mathematical functions:
+This famous differential equation is known as **Bessel's Differential Equation**. Its general mathematical solution is a linear combination of two functions:
 
 $$R(r) = C J_n(k_c r) + D Y_n(k_c r)$$
 
-Where:
-* $J_n(x)$ is the **Bessel function of the first kind** (think of it as a damped sine wave that gradually decays in amplitude as radius increases).
-* $Y_n(x)$ is the **Bessel function of the second kind** (also called a Neumann function).
+Let us understand what these two functions actually are, and why one of them must be completely eliminated:
 
-### The Physics Sanity Check: Dropping $Y_n$
-If you look at the graph of $Y_n(x)$ as $x \to 0$ (approaching the dead center of the pipe), $Y_n(x)$ plunges to negative infinity ($-\infty$). 
+### 1. Bessel Function of the First Kind: $J_n(x)$
+The function $J_n(x)$ represents cylindrical standing waves that oscillate and slowly decay in amplitude as radius increases (much like ripples radiating outward when a stone is dropped into a pond).
 
-In a hollow metallic pipe, the electromagnetic field at the center is completely finite and smooth—it cannot become infinitely intense! Therefore, the coefficient $D$ must be **identically zero**:
+Mathematically, it is defined by the infinite power series:
+
+$$J_n(x) = \sum_{m=0}^{\infty} \frac{(-1)^m}{m! \, (m+n)!} \left(\frac{x}{2}\right)^{2m+n}$$
+
+Let us examine how $J_n(x)$ behaves as $x \to 0$ (at the dead center of the hollow pipe, $r = 0$):
+* **For $n = 0$ ($0^{\text{th}}$ order):**
+  $$J_0(x) \approx 1 - \frac{x^2}{4} \implies J_0(0) = 1$$
+  It has a completely finite, smooth peak at the center (just like a cosine curve $\cos(0) = 1$).
+* **For $n \ge 1$ (higher orders):**
+  $$J_n(x) \approx \frac{1}{n!} \left(\frac{x}{2}\right)^n \implies J_n(0) = 0$$
+  It smoothly passes through zero at the center (just like a sine curve $\sin(0) = 0$).
+
+In all cases, **$J_n(x)$ is finite, smooth, and well-behaved everywhere across the pipe**.
+
+---
+
+### 2. Bessel Function of the Second Kind (Neumann Function): $Y_n(x)$
+The second independent solution, $Y_n(x)$ (sometimes denoted as $N_n(x)$), is defined as:
+
+$$Y_n(x) = \frac{J_n(x) \cos(n\pi) - J_{-n}(x)}{\sin(n\pi)}$$
+
+Now, let us look at how $Y_n(x)$ behaves as $x \to 0$ (approaching the center axis $r = 0$):
+* **For $n = 0$:**
+  $$Y_0(x) \approx \frac{2}{\pi} \left[ \ln\left(\frac{x}{2}\right) + \gamma \right] \quad (\text{where } \gamma \approx 0.5772)$$
+  Because the natural logarithm of zero approaches negative infinity ($\ln(0) \to -\infty$), **$Y_0(x) \to -\infty$**!
+* **For $n \ge 1$:**
+  $$Y_n(x) \approx -\frac{(n-1)!}{\pi} \left(\frac{2}{x}\right)^n$$
+  Because $x$ is in the denominator, as $x \to 0$, dividing by zero causes **$Y_n(x) \to -\infty$**!
+
+---
+
+### The Physics Sanity Check: Why $D$ MUST Be Set to Zero ($D = 0$)
+
+Look at what would happen if we allowed $D \neq 0$:
+Inside our hollow metallic pipe, the center axis ($r = 0$) is simply empty space (air or vacuum). There is no wire, no charge filament, and no source sitting at $r = 0$.
+
+If $D$ were anything other than zero, the term $D Y_n(k_c r)$ would cause the electric and magnetic fields at the center of the pipe to **blow up to negative infinity ($-\infty$)**!
+
+An infinite electromagnetic field would mean an infinite energy density:
+
+$$u_{\text{energy}} = \frac{1}{2}\epsilon |\vec{E}|^2 + \frac{1}{2}\mu |\vec{H}|^2 \to \infty$$
+
+The universe does not allow an empty pipe to hold infinite energy! 
+
+Therefore, to keep our physical fields finite, continuous, and physically realistic at $r = 0$, **the coefficient $D$ must be strictly set to zero**:
 
 $$D = 0$$
 
-This leaves us with the clean radial field profile:
+*(Note: The only time $Y_n$ is allowed in microwave engineering is in a **coaxial cable**, where a solid metal inner conductor occupies the center region from $r = 0$ to $r = a_{\text{inner}}$. In a coax, $r = 0$ is excluded from the dielectric space, so $Y_n$ can safely exist! But in a hollow circular waveguide, the center is included, so $Y_n$ is strictly forbidden).*
+
+Setting $D = 0$ eliminates the singularity and leaves us with the clean, physical radial profile:
 
 $$R(r) = C J_n(k_c r)$$
 
@@ -185,13 +229,12 @@ Because circular cavities can be lathed with extraordinary geometric precision, 
 ## Wrapping Up the Series
 
 Over the course of these seven posts, we have demystified guided wave physics from top to bottom:
-1. **Post 23: Why TEM waves cannot exist and the momentum budget.
-2. **Post 24:** Deriving TE and TM modes and forbidden states.
-7. **Post 29:** The zig-zag path and phase constant. and how the cutoff frequency acts as a toll booth.
-2. **Post 24:** The internal zig-zag bouncing path and how $\beta = \sqrt{k^2 - k_c^2}$ governs forward propagation.
-7. **Post 29:** Resolving the faster-than-light illusion of phase velocity vs group velocity ($v_p \cdot v_g = u^2$).
-7. **Post 29:** The impedance of a box—how TE modes act like open circuits and TM modes act like shorts at cutoff.
-7. **Post 29:** Why rectangular guides use an aspect ratio of $a = 2b$ and avoiding the catastrophic square waveguide degeneracy.
-7. **Post 29:** Conquering cylindrical boundaries with Bessel functions, discovering the dominant $TE_{11}$ mode, and leveraging rotary joints.
+1. **Post 23:** The Hollow Pipe Paradox: Why TEM Waves Cannot Exist and the Momentum Budget.
+2. **Post 24:** Deriving TE and TM Modes: Boundary Conditions and Forbidden States.
+3. **Post 25:** The Zig-Zag Path: Phase Constant ($\beta$) and Internal Bouncing.
+4. **Post 26:** The Relativity Illusion: Phase Velocity vs. Group Velocity ($v_p \cdot v_g = u^2$).
+5. **Post 27:** The Impedance of a Box: Wave Impedance in TE vs. TM Modes.
+6. **Post 28:** Dominant Modes, Degenerate Modes, and the Square Waveguide Disaster.
+7. **Post 29:** Bending the Boundaries: Circular Waveguides, Bessel Functions, and Rotary Joints.
 
 You now possess the foundational knowledge that bridges classical microwave engineering with modern quantum hardware design!
